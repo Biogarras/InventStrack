@@ -1,0 +1,7 @@
+{
+  "name": "InventStrack",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
