@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild} from '@angular/core';
 import { IonModal,NumericValueAccessor } from '@ionic/angular';
 import { Tienda } from 'src/app/models/tienda';
-import { TiendasService } from 'src/app/services/productos/productos.service';
+import { TiendasService } from 'src/app/services/tiendas/tiendas.service';
 
 @Component({
   selector: 'app-lista-tiendas',
