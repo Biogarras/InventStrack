@@ -1,13 +1,69 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>lista-tiendas</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button default-href="#"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Lista de Productos</ion-title>
+    <ion-buttons slot="end">
+      <ion-button id="open-modal" > Agregar </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">lista-tiendas</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-list>
+    <ion-item *ngFor="let tienda of tiendas">
+      <ion-label>{{tienda.nombre}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="cancelar()">Cancelar</ion-button>
+          </ion-buttons>
+          <ion-title>Nueva Tienda</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="agregarTienda(nueva_tienda)" [strong]="true">Agregar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-input
+            label="id"
+            type="text"
+            placeholder="id"
+            [(ngModel)]="nueva_tienda.id"
+          ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            label="nombre"
+            type="text"
+            placeholder="nombre"
+            [(ngModel)]="nueva_tienda.nombre"
+          ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            label="ciudad"
+            type="text"
+            placeholder="ciudad"
+            [(ngModel)]="nueva_tienda.ciudad"
+          ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            label="encargado"
+            type="text"
+            placeholder="encargado"
+            [(ngModel)]="nueva_tienda.encargado"
+          ></ion-input>
+        </ion-item>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>
