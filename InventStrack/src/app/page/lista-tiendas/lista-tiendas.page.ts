@@ -2,7 +2,9 @@ import { Component, OnInit, ViewChild} from '@angular/core';
 import { IonModal,NumericValueAccessor } from '@ionic/angular';
 import { Tienda } from 'src/app/models/tienda';
 import { TiendasService } from 'src/app/services/tiendas/tiendas.service';
+
 import { OverlayEventDetail } from '@ionic/core/components';
+
 
 @Component({
   selector: 'app-lista-tiendas',
@@ -16,6 +18,7 @@ export class ListaTiendasPage implements OnInit {
   mensaje = ""
   name = ""
   tiendas : Tienda[] = []
+
   isAdmin: boolean = false;
 
   nueva_tienda: Tienda = {
@@ -25,6 +28,7 @@ export class ListaTiendasPage implements OnInit {
     ciudad:"",
     encargado:""
   }
+
 
   constructor( private _serviceTienda: TiendasService,) { }
 
@@ -47,6 +51,13 @@ export class ListaTiendasPage implements OnInit {
     if (ev.detail.role === 'confirm') {
       this.mensaje = `Hello, ${ev.detail.data}!`;
     }
+
+  constructor( private _serviceTienda: TiendasService) { }
+
+  ngOnInit() {
+    
+
   }
 
 }
+

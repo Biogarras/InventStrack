@@ -8,11 +8,17 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
   
   {
+    path: 'login',
+    loadChildren: () => import('./page/login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+
     path: 'login',
     loadChildren: () => import('./page/login/login.module').then( m => m.LoginPageModule)
   },
@@ -24,7 +30,13 @@ const routes: Routes = [
     path: 'lista-tiendas',
     loadChildren: () => import('./page/lista-tiendas/lista-tiendas.module').then( m => m.ListaTiendasPageModule)
   },
-  
+
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full'
+  },
+
 
 ];
 
