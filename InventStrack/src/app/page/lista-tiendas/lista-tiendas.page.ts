@@ -16,6 +16,7 @@ export class ListaTiendasPage implements OnInit {
   mensaje = ""
   name = ""
   tiendas : Tienda[] = []
+  isAdmin: boolean = false;
 
   nueva_tienda: Tienda = {
 
@@ -25,7 +26,7 @@ export class ListaTiendasPage implements OnInit {
     encargado:""
   }
 
-  constructor( private _serviceTienda: TiendasService) { }
+  constructor( private _serviceTienda: TiendasService,) { }
 
   ngOnInit() {
     this.tiendas = this._serviceTienda.obtener_tiendas();
