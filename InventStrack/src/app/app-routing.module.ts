@@ -7,36 +7,22 @@ const routes: Routes = [
     redirectTo: 'login',
     pathMatch: 'full'
   },
-  {
 
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },
-  
-  {
-    path: 'login',
-    loadChildren: () => import('./page/login/login.module').then( m => m.LoginPageModule)
-  },
   {
 
     path: 'login',
     loadChildren: () => import('./page/login/login.module').then( m => m.LoginPageModule)
   },
+
   {
     path: 'dashboard',
     loadChildren: () => import('./page/dashboard/dashboard.module').then( m => m.DashboardPageModule)
   },
+
   {
     path: 'lista-tiendas',
     loadChildren: () => import('./page/lista-tiendas/lista-tiendas.module').then( m => m.ListaTiendasPageModule)
   },
-
-  {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
-
 
 ];
 

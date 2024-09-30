@@ -7,6 +7,7 @@ export interface Tienda{
     nombre: string;
     ciudad: string;
     encargado: string;
+    deleted_at:Date;
     
     
 
