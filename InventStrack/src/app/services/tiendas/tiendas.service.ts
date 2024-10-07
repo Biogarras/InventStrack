@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Tienda } from 'src/app/models/tienda';
 import { ApiconfigService } from '../apiconfig/apiconfig.service';
 import { HttpParams, HttpResponse } from '@angular/common/http';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { CrearTienda } from 'src/app/models/CrearTienda';
 
 
 @Injectable({
@@ -14,10 +15,12 @@ export class TiendasService {
 
   constructor(private apiConfig: ApiconfigService){}
 
-  obtenerTiendas(){
+  obtenerTiendas():Observable<HttpResponse<Tienda[]>>{
+    
     const params = new HttpParams().set('select', '*');
     return this.apiConfig.get<Tienda[]>(this.path, params).pipe(
       map(response =>{
+        console.log(response)
         const datoFiltrado = response.body?.filter(tienda => tienda.deleted_at === null);
 
 
@@ -25,14 +28,15 @@ export class TiendasService {
         body : datoFiltrado,
         headers : response.headers,
         status : response.status,
-        statusText: response.statusText
+        statusText: response.statusText,
       })
     })
-    )
+    );
   }
 
-
-
-
+  agregarTienda(tienda: CrearTienda): Observable <HttpResponse<Tienda>>{
+    return this.apiConfig.post<CrearTienda>(this.path,tienda);
+  }
+  
 
 }

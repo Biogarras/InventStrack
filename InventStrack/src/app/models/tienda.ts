@@ -1,15 +1,13 @@
 
-
-
 export interface Tienda{
 
-    id: number;
-    nombre: string;
-    ciudad: string;
-    encargado: string;
-    deleted_at:Date;
+    id: number |null;
+    nombre: string | null ;
+    ciudad: string | null;
+    region: string | null; 
+    direccion:string | null;
+    deleted_at:Date ;
     
     
-
-
+    
 }
