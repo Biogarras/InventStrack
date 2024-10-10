@@ -7,6 +7,4 @@ export interface CrearTienda{
     direccion:string;
     deleted_at:Date ;
     
-
-
 }

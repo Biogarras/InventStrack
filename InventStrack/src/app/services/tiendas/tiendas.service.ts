@@ -37,6 +37,15 @@ export class TiendasService {
   agregarTienda(tienda: CrearTienda): Observable <HttpResponse<Tienda>>{
     return this.apiConfig.post<CrearTienda>(this.path,tienda);
   }
-  
+
+  actualizarTienda (tienda:CrearTienda, id:1){
+    try{
+      const params = new HttpParams().set("id", `eq.${id}`);   
+    return this.apiConfig.patch(this.path, tienda, params)
+  }catch(e){
+    console.log(e)
+    return e
+  }
+}
 
 }

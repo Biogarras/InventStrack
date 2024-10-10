@@ -37,14 +37,24 @@ export class ApiconfigService {
     )
   }
   post<T>(path: string, data:any):Observable<HttpResponse<T>>{
-    return this.httpClient.post<T>(`${this.urlBase}/${path}`,data,
-    {
-    headers:this.getHeaders(),
-     observe: 'response'
+      return this.httpClient.post<T>(`${this.urlBase}/${path}`,data,
+      {
+      headers:this.getHeaders(),
+      observe: 'response'  
+      })
+      .pipe(
+      catchError(this.handlerError)
+    );
+  }
+  patch<T>(path: string, data: any, params?: HttpParams): Observable<HttpResponse<T>> {
+    return this.httpClient.patch<T>(`${this.urlBase}/${path}`, data, {
+      headers: this.getHeaders(),
+      observe: 'response',
+      params
     })
     .pipe(
-    catchError(this.handlerError)
-  )
-}
+      catchError(this.handlerError)
+    );
+  }
 }
 

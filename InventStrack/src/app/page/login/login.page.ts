@@ -19,16 +19,25 @@ export class LoginPage implements OnInit {
   }
 
   login(username: string, password: string){
-    if(this._authService.autentificacion(username,password)){
-      console.info("Usuario Existe")
+    // Validar que los campos no estén vacíos
+    if (!username || !password) {
+      console.error("Por favor, completa ambos campos.");
+      return; // Salir de la función si hay campos vacíos
+    }
+  
+    if (this._authService.autentificacion(username, password)) {
+      console.info("Usuario Existe");
       this.router.navigate(['dashboard'], {
-        state:{
+        state: {
           usuario: username
         }
-      })
-    }else{
-      console.error("Usuario no existe")
+      });
+    } else {
+      console.error("Usuario no existe");
     }
   }
-
+  forgotPassword() {
+    // Aquí puedes manejar la lógica para "Olvidé mi contraseña"
+    console.log('Olvidé mi contraseña');
+  }
 }
