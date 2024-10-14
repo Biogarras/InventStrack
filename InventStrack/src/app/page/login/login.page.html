@@ -26,20 +26,18 @@
 
           <!-- Campo de Username -->
           <ion-item class="custom-input">
-            <ion-label position="floating">Username</ion-label>
-            <ion-input type="text" [(ngModel)]="username" required></ion-input>
+            <ion-label position="floating">nombreUsuario</ion-label>
+            <ion-input [(ngModel)]="nombreUsuario" ></ion-input>
           </ion-item>
 
           <!-- Campo de Password -->
           <ion-item class="custom-input">
-            <ion-label position="floating">Password</ion-label>
-            <ion-input type="password" [(ngModel)]="password" required></ion-input>
+            <ion-label position="floating">password</ion-label>
+            <ion-input [(ngModel)]="password" type="password"></ion-input>
           </ion-item>
 
           <!-- Botón de inicio de sesión -->
-          <ion-button expand="block" color="primary" class="login-button" (click)="login(username, password)">
-            Iniciar Sesión
-          </ion-button>
+          <ion-button expand="block" color="primary" class="login-button" (click)="login()">Iniciar sesión</ion-button>
 
           <!-- Enlace de Olvidé mi contraseña -->
           <div class="forgot-password ion-text-center">

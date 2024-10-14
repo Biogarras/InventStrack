@@ -1,0 +1,24 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Menú Inicial</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">Logout</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item button (click)="gestionarUsuarios()">
+      <ion-label>Gestión de Usuarios</ion-label>
+    </ion-item>
+
+    <ion-item button (click)="gestionarTiendas()">
+      <ion-label>Gestión de Tiendas</ion-label>
+    </ion-item>
+
+    <ion-item button (click)="gestionarProductos()">
+      <ion-label>Gestión de Productos</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

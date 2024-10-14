@@ -56,5 +56,15 @@ export class ApiconfigService {
       catchError(this.handlerError)
     );
   }
+  delete<T>(path: string, params?: HttpParams): Observable<HttpResponse<T>> {
+    return this.httpClient.delete<T>(`${this.urlBase}/${path}`, {
+      headers: this.getHeaders(),
+      observe: 'response',
+      params
+    })
+    .pipe(
+      catchError(this.handlerError)
+    );
+  }
 }
 
