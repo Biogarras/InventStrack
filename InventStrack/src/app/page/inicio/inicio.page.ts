@@ -24,10 +24,14 @@ export class InicioPage {
   gestionarProductos() {
     this.router.navigate(['/gestionar-productos']); // Cambia la ruta según tu página de gestión de productos
   }
+  gestionarInventarios() {
+    this.router.navigate(['/gestion-inventario']); // Cambia la ruta según tu página de gestión de productos
+  }
+
 
   // Método para cerrar sesión
   logout() {
-    this.authService.logout(); // Llama al método de logout de tu servicio de autenticación
-    this.router.navigate(['/login']); // Redirige a la página de login
+    this.authService.logout(); // Eliminar el token
+    this.router.navigate(['/login']); // Redirigir al login
   }
 }

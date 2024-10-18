@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AutentificacionService } from 'src/app/services/autenticacion/autenticacion.service';
-import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -9,42 +8,43 @@ import { HttpResponse } from '@angular/common/http';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  nombreUsuario: string = ""; // Cambiamos el campo a nombreUsuario
-  password: string = ""; // Campo para la contraseña del usuario
+  nombreUsuario: string = ""; 
+  password: string = ""; 
 
   constructor(private _authService: AutentificacionService, private router: Router) { }
 
   ngOnInit() {}
 
-  login() {
+  async login() {
     // Validar que los campos no estén vacíos
     if (!this.nombreUsuario || !this.password) {
       console.error("Por favor, completa ambos campos.");
       return; // Salir de la función si hay campos vacíos
     }
 
-    // Llamar al servicio de autenticación
-    this._authService.autentificacion(this.nombreUsuario, this.password).subscribe({
-      next: (isAuthenticated: boolean) => {
-        if (isAuthenticated) { // Verificar que la autenticación fue exitosa
-          console.info("Usuario autenticado");
-          this.router.navigate(['dashboard'], {
-            state: {
-              usuario: this.nombreUsuario // Utilizar el nombre de usuario
-            }
-          });
-        } else {
-          console.error("Usuario no autenticado");
-        }
-      },
-      error: (error) => {
-        console.error("Error de autenticación", error);
+    try {
+      // Llamar al servicio de autenticación usando Supabase
+      const isAuthenticated = await this._authService.autentificacion(this.nombreUsuario, this.password);
+      
+      if (isAuthenticated) {
+        console.info("Usuario autenticado");
+        // Redirigir al inicio si el login es exitoso
+        this.router.navigate(['/inicio'], {
+          state: {
+            usuario: this.nombreUsuario // Pasar el nombre de usuario
+          }
+        });
+        console.log("Nombre de usuario:", this.nombreUsuario);
+      } else {
+        console.error("Usuario no autenticado. Verifica tus credenciales.");
       }
-    });
+    } catch (error) {
+      console.error("Error durante el proceso de autenticación:", error);
+    }
   }
 
   forgotPassword() {
-    // Aquí puedes manejar la lógica para "Olvidé mi contraseña"
+    // Lógica para "Olvidé mi contraseña"
     console.log('Olvidé mi contraseña');
   }
 }
