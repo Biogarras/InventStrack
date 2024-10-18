@@ -24,10 +24,16 @@ const routes: Routes = [
     loadChildren: () => import('./page/lista-tiendas/detalles-tiendas/detalles-tiendas.module').then( m => m.DetallesTiendasPageModule)
   },
   {
+    path: 'gestion-inventario',
+    loadChildren: () => import('./page/gestion-inventario/gestion-inventario.module').then( m => m.GestionInventarioPageModule)
+  },
+  {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
   },
+ 
+
   
 
  

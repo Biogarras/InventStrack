@@ -19,11 +19,13 @@ export class UsuarioService {
       .get<Usuario[]>(`${this.path}?nombreUsuario=eq.${nombreUsuario}`, params)
       .pipe(
         map(response => {
+          console.log (response)
           if (!response.body || response.body.length === 0) {
             throw new Error('No se encontró el usuario');
           }
           return response.body[0]; // Retorna el primer usuario encontrado
         })
+        
       );
   }
 

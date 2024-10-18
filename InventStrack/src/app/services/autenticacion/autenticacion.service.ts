@@ -11,7 +11,8 @@ export class AutentificacionService {
   logout() {
     throw new Error('Method not implemented.');
   }
-
+ 
+ 
   constructor(private usuarioService: UsuarioService) { }
 
   autentificacion(nombreUsuario: string, password: string): Observable<boolean> {
