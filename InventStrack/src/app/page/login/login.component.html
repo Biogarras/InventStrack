@@ -1,0 +1,41 @@
+<ion-content class="ion-padding login-container">
+  <ion-card class="login-card">
+    <ion-card-header>
+      <ion-card-title class="ion-text-center">Iniciar Sesión</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <form (ngSubmit)="login()" class="login-form">
+        <ion-item>
+          <ion-label position="floating">Correo</ion-label>
+          <ion-input 
+            type="email" 
+            [(ngModel)]="email" 
+            name="email" 
+            required 
+            autocomplete="email">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Contraseña</ion-label>
+          <ion-input 
+            type="password" 
+            [(ngModel)]="password" 
+            name="password" 
+            required 
+            autocomplete="current-password">
+          </ion-input>
+        </ion-item>
+
+        <ion-button expand="block" type="submit" class="login-button">
+          Iniciar Sesión
+        </ion-button>
+      </form>
+
+      <div class="register-prompt">
+        <p>¿No tienes una cuenta? <a href="#">Regístrate aquí</a></p>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

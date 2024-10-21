@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Panel de Administración</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="admin-dashboard">
+    <ion-card button (click)="goTo('gestion-usuario')">
+      <ion-card-header>
+        <ion-icon name="person-circle-outline" size="large"></ion-icon>
+        <ion-card-title>Gestión de Usuarios</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+
+    <ion-card button (click)="goTo('gestion-tienda')">
+      <ion-card-header>
+        <ion-icon name="storefront-outline" size="large"></ion-icon>
+        <ion-card-title>Gestión de Tiendas</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+
+    <ion-card button (click)="goTo('gestion-producto')">
+      <ion-card-header>
+        <ion-icon name="pricetags-outline" size="large"></ion-icon>
+        <ion-card-title>Gestión de Productos</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+
+    <ion-card button (click)="goTo('gestion-inventario')">
+      <ion-card-header>
+        <ion-icon name="document-text-outline" size="large"></ion-icon>
+        <ion-card-title>Gestión de Inventarios</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </div>
+</ion-content>
+

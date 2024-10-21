@@ -1,0 +1,29 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--ion-color-light);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 8px rgba(224, 76, 76, 0.74);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.login-button {
+  margin-top: 8px;
+}
+
+.register-prompt {
+  text-align: center;
+  margin-top: 12px;
+}

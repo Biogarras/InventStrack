@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Gestión de Tiendas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form (ngSubmit)="crearTienda()" class="form-tienda">
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input [(ngModel)]="nuevaTienda.nombre" name="nombre" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Dirección</ion-label>
+      <ion-input [(ngModel)]="nuevaTienda.direccion" name="direccion" required></ion-input>
+    </ion-item>
+    <ion-button expand="block" type="submit">Crear Tienda</ion-button>
+  </form>
+
+  <ion-list>
+    <ion-item *ngFor="let tienda of tiendas">
+      <ion-label>{{ tienda.nombre }} - {{ tienda.direccion }}</ion-label>
+      <ion-button fill="clear" color="danger" (click)="eliminarTienda(tienda.id)">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Gestión de Inventarios</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form (ngSubmit)="crearInventario()" class="form-inventario">
+    <ion-item>
+      <ion-label>Tienda</ion-label>
+      <ion-select [(ngModel)]="nuevoInventario.tienda_id" name="tienda_id" required>
+        <ion-select-option *ngFor="let tienda of tiendas" [value]="tienda.id">
+          {{ tienda.nombre }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Fecha de Creación</ion-label>
+      <ion-datetime [(ngModel)]="nuevoInventario.fecha_creacion" name="fecha_creacion" required></ion-datetime>
+    </ion-item>
+    <ion-button expand="block" type="submit">Crear Inventario</ion-button>
+  </form>
+
+  <ion-list>
+    <ion-item *ngFor="let inventario of inventarios">
+      <ion-label>
+        <h2>ID: {{ inventario.id }}</h2>
+        <p>Tienda: {{ inventario.tienda_id }}</p>
+        <p>Fecha: {{ inventario.fecha_creacion }}</p>
+        <p>Estado: {{ inventario.estado }}</p>
+      </ion-label>
+      <ion-button fill="clear" color="tertiary" (click)="actualizarEstado(inventario)">
+        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" color="danger" (click)="eliminarInventario(inventario.id)">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
