@@ -1,0 +1,28 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Gestión de Tiendas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goBack()">Volver</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item button (click)="crearTienda()">
+      <ion-label>Crear Tiendas</ion-label>
+    </ion-item>
+
+    <ion-item button (click)="verTiendas()">
+      <ion-label>Ver Tiendas</ion-label>
+    </ion-item>
+
+    <ion-item button (click)="modificarTienda()">
+      <ion-label>Modificar Tienda</ion-label>
+    </ion-item>
+
+    <ion-item button (click)="eliminarTienda()">
+      <ion-label>Eliminar Tienda</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

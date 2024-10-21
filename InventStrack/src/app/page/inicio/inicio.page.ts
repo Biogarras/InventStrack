@@ -17,7 +17,7 @@ export class InicioPage {
 
   // Método para gestionar tiendas
   gestionarTiendas() {
-    this.router.navigate(['/gestionar-tiendas']); // Cambia la ruta según tu página de gestión de tiendas
+    this.router.navigate(['/gestion-tienda']); // Cambia la ruta según tu página de gestión de tiendas
   }
 
   // Método para gestionar productos

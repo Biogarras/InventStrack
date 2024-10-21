@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TiendasService } from '../services/tiendas/tiendas.service';
-import { Tienda } from 'src/app/models/tienda';
+import { Tienda } from 'src/app/models/Tienda/tienda';
 import { async, firstValueFrom } from 'rxjs';
 import { SlicePipe } from '@angular/common';
 

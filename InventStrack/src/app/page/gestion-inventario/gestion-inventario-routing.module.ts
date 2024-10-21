@@ -4,10 +4,16 @@ import { Routes, RouterModule } from '@angular/router';
 import { GestionInventarioPage } from './gestion-inventario.page';
 
 const routes: Routes = [
+  
+  {
+    path: 'crearinventario',
+    loadChildren: () => import('./crearinventario/crearinventario.module').then( m => m.CrearinventarioPageModule)
+  },
   {
     path: '',
     component: GestionInventarioPage
   }
+
 ];
 
 @NgModule({

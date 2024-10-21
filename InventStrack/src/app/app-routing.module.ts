@@ -13,25 +13,23 @@ const routes: Routes = [
     path: 'inicio',
     loadChildren: () => import('./page/inicio/inicio.module').then( m => m.InicioPageModule)
   },
-
-  {
-    path: 'lista-tiendas',
-    loadChildren: () => import('./page/lista-tiendas/lista-tiendas.module').then( m => m.ListaTiendasPageModule)
-  },
- 
-  {
-    path: 'detalles-tiendas',
-    loadChildren: () => import('./page/lista-tiendas/detalles-tiendas/detalles-tiendas.module').then( m => m.DetallesTiendasPageModule)
-  },
+  
   {
     path: 'gestion-inventario',
     loadChildren: () => import('./page/gestion-inventario/gestion-inventario.module').then( m => m.GestionInventarioPageModule)
   },
+  
+  {
+    path: 'gestion-tienda',
+    loadChildren: () => import('./page/gestion-tienda/gestion-tienda.module').then( m => m.GestionTiendaPageModule)
+  },
+  
   {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
   },
+
  
 
   
