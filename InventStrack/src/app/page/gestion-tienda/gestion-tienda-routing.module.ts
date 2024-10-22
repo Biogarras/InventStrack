@@ -14,8 +14,8 @@ const routes: Routes = [
     loadChildren: () => import('./ver-tiendas/ver-tiendas.module').then( m => m.VerTiendasPageModule)
   },
   {
-    path: 'modificar-tienda',
-    loadChildren: () => import('./modificar-tienda/modificar-tienda.module').then( m => m.ModificarTiendaPageModule)
+    path: 'modificar-tienda/:id', // Agregas el parámetro :id aquí
+    loadChildren: () => import('./modificar-tienda/modificar-tienda.module').then(m => m.ModificarTiendaPageModule)
   },
   {
     path: 'eliminar-tienda',

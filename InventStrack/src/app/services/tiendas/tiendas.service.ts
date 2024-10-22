@@ -39,10 +39,8 @@ export class TiendasService {
           nombre_tienda: response.body?.nombre_tienda || null,
           direccion: response.body?.direccion || null,
           ciudad: response.body?.ciudad || null,
-          created_at: response.body?.created_at || null,
-          deleted_at: null // Asumimos que una tienda recién creada no está eliminada
-          ,
-          id_tienda: null
+          // Asumimos que una tienda recién creada no está eliminada
+      
         };
         return new HttpResponse({
           body: tiendaCreada,
@@ -58,5 +56,15 @@ export class TiendasService {
   actualizarTienda(tienda: CrearTienda, id: number): Observable<HttpResponse<Tienda>> {
     const params = new HttpParams().set('id', `eq.${id}`);
     return this.apiConfig.patch<Tienda>(this.path, tienda, params);
+  }
+
+  // Obtener tienda por ID
+  obtenerTiendaPorId(id: number): Observable<HttpResponse<Tienda>> {
+    return this.apiConfig.get<Tienda>(`tiendas/${id}`);
+  }
+  
+
+  modificarTienda(tienda: Tienda): Observable<any> {
+    return this.apiConfig.put(`tiendas/${tienda.id_tienda}`, tienda);
   }
 }

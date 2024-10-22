@@ -14,17 +14,17 @@ export class GestionTiendaPage implements OnInit {
   ngOnInit() {
   }
   crearTienda() {
-    this.router.navigate(['/crear-tienda']);
+    this.router.navigate(['/gestion-tienda/crear-tienda']);
   }
 
   // Navega a la página de visualización de inventarios
   verTiendas() {
-    this.router.navigate(['/ver-tiendas']);
+    this.router.navigate(['/gestion-tienda/ver-tiendas']);
   }
 
   // Navega a la página de modificación de inventario
   modificarTienda() {
-    this.router.navigate(['/modificar-tienda']);
+    this.router.navigate(['/gestion-tienda/modificar-tienda']);
   }
 
   // Navega a la página de eliminación de inventario

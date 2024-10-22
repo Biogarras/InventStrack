@@ -14,6 +14,7 @@ export class CrearTiendaPage implements OnInit {
     direccion: '',
     ciudad: ''
   };
+  router: any;
 
   constructor(private tiendasService: TiendasService) {}
 
@@ -31,6 +32,9 @@ export class CrearTiendaPage implements OnInit {
         // Aquí puedes manejar el error, por ejemplo, mostrar un mensaje de error al usuario
       }
     });
+  }
+  goBack() {
+    this.router.navigate(['/gestion-tienda']);  // Ajusta la ruta según la página que quieras
   }
 
 
