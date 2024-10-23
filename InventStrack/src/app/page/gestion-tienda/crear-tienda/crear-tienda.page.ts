@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CrearTienda } from 'src/app/models/Tienda/creartienda';
 import { TiendasService } from 'src/app/services/tiendas/tiendas.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-crear-tienda',

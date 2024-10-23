@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AutentificacionService } from 'src/app/services/autenticacion/autenticacion.service';
+import { firstValueFrom } from 'rxjs';  
 
 @Component({
   selector: 'app-login',
@@ -24,7 +25,7 @@ export class LoginPage implements OnInit {
 
     try {
       // Llamar al servicio de autenticación usando Supabase
-      const isAuthenticated = await this._authService.autentificacion(this.nombreUsuario, this.password);
+      const isAuthenticated = await firstValueFrom(this._authService.autentificacion(this.nombreUsuario, this.password));
       
       if (isAuthenticated) {
         console.info("Usuario autenticado");
