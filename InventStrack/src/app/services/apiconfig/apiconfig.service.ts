@@ -67,15 +67,5 @@ export class ApiconfigService {
     );
   }
 
-  put<T>(path: string, data: any): Observable<HttpResponse<T>> {
-    return this.httpClient.put<T>(`${this.urlBase}/${path}`, data, {
-      headers: this.getHeaders(),
-      observe: 'response'
-    })
-    .pipe(
-      catchError(this.handlerError)
-    );
-  }
-  
 }
 

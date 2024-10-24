@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertController } from '@ionic/angular';
+import { TiendasService } from 'src/app/services/tiendas/tiendas.service';
 
 @Component({
   selector: 'app-eliminar-tienda',
@@ -7,9 +9,47 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EliminarTiendaPage implements OnInit {
 
-  constructor() { }
+  id: number | undefined;
+
+  constructor(private tiendasService :TiendasService , private alertController: AlertController) { }
 
   ngOnInit() {
+  }
+  // Función para eliminar tienda
+  // Función para eliminar tienda
+  eliminarTienda() {
+    if (this.id !== undefined && this.id > 0) {
+      this.tiendasService.eliminarTienda(this.id).subscribe({
+        next: async (response) => {
+          const alert = await this.alertController.create({
+            header: 'Éxito',
+            message: 'La tienda ha sido eliminada exitosamente.',
+            buttons: ['OK'],
+          });
+          await alert.present();
+        },
+        error: async (error) => {
+          const alert = await this.alertController.create({
+            header: 'Error',
+            message: 'Hubo un problema al eliminar la tienda.',
+            buttons: ['OK'],
+          });
+          await alert.present();
+        }
+      });
+    } else {
+      this.mostrarAlerta('Error', 'Debe ingresar un ID válido.');
+    }
+  }
+
+  // Función para mostrar alertas genéricas
+  async mostrarAlerta(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 
 }

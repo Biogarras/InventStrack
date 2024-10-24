@@ -65,6 +65,11 @@ export class TiendasService {
   
 
   modificarTienda(tienda: Tienda): Observable<any> {
-    return this.apiConfig.put(`tiendas/${tienda.id_tienda}`, tienda);
+    return this.apiConfig.patch(`tiendas/${tienda.id_tienda}`, tienda);
+  }
+  // Eliminar una tienda por su ID (soft delete)
+  eliminarTienda(id: number): Observable<any> {
+    const path = `tiendas/${id}`; // Ajusta la ruta de acuerdo a tu API
+    return this.apiConfig.delete(path); // Usa el método delete de ApiconfigService
   }
 }

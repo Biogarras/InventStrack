@@ -30,9 +30,9 @@ export class ModificarTiendaPage implements OnInit {
   }
 
   cargarTienda() {
-    const id = this.route.snapshot.paramMap.get('id'); // Capturamos el ID de la URL
+    const id = Number(this.route.snapshot.paramMap.get('id')); // Capturamos el ID de la URL
     if (id) {
-      this._tiendaService.obtenerTiendaPorId(+id).subscribe((response: HttpResponse<Tienda>) => {
+      this._tiendaService.obtenerTiendaPorId(id).subscribe((response: HttpResponse<Tienda>) => {
         if (response.body) {
           this.tienda = response.body;
         }
@@ -46,7 +46,7 @@ export class ModificarTiendaPage implements OnInit {
       throw new Error("El ID de la tienda es requerido para modificar");
     }
     // Realiza la llamada PUT para modificar la tienda
-    return this.apiConfig.put<Tienda>(`tiendas?id=eq.${tienda.id_tienda}`, tienda).pipe(
+    return this.apiConfig.patch<Tienda>(`tiendas?id=eq.${tienda.id_tienda}`, tienda).pipe(
       map(response => {
         return new HttpResponse({
           body: response.body,

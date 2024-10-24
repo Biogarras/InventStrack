@@ -19,7 +19,7 @@ export class LoginPage implements OnInit {
   async login() {
     // Validar que los campos no estén vacíos
     if (!this.nombreUsuario || !this.password) {
-      console.error("Por favor, completa ambos campos.");
+      alert("Por favor, completa ambos campos.");
       return; // Salir de la función si hay campos vacíos
     }
 
@@ -37,7 +37,9 @@ export class LoginPage implements OnInit {
         });
         console.log("Nombre de usuario:", this.nombreUsuario);
       } else {
-        console.error("Usuario no autenticado. Verifica tus credenciales.");
+        console.error("Usuario no autenticado. Verifica tus credenciales.")
+        alert("Datos incorrectos")
+        ;
       }
     } catch (error) {
       console.error("Error durante el proceso de autenticación:", error);

@@ -29,7 +29,7 @@ export class GestionTiendaPage implements OnInit {
 
   // Navega a la página de eliminación de inventario
   eliminarTienda(){
-    this.router.navigate(['/eliminar-tienda']);
+    this.router.navigate(['gestion-tienda/eliminar-tienda']);
   }
 
   // Vuelve a la página de inicio o a la anterior
