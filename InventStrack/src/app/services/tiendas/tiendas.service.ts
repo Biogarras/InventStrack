@@ -64,12 +64,30 @@ export class TiendasService {
   }
   
 
-  modificarTienda(tienda: Tienda): Observable<any> {
-    return this.apiConfig.patch(`tiendas/${tienda.id_tienda}`, tienda);
+  modificarTienda(tienda: Tienda): Observable<HttpResponse<Tienda>> {
+    return this.apiConfig.patch<Tienda>(`tiendas/${tienda.id_tienda}`, tienda).pipe(
+      map(response => {
+        return new HttpResponse({
+          body: response.body,  // Aquí deberías acceder a response.body directamente
+          headers: response.headers,
+          status: response.status,
+          statusText: response.statusText,
+        });
+      })
+    );
   }
   // Eliminar una tienda por su ID (soft delete)
-  eliminarTienda(id: number): Observable<any> {
-    const path = `tiendas/${id}`; // Ajusta la ruta de acuerdo a tu API
-    return this.apiConfig.delete(path); // Usa el método delete de ApiconfigService
-  }
+  eliminarTienda(id: number): Observable<HttpResponse<any>> {
+  const body = { deleted_at: new Date().toISOString() }; // Establece la fecha actual
+  return this.apiConfig.patch(`tiendas/${id}`, body).pipe(
+    map(response => {
+      return new HttpResponse({
+        body: response.body,  // En este caso, el body podría ser relevante
+        headers: response.headers,
+        status: response.status,
+        statusText: response.statusText,
+      });
+    })
+  );
+}
 }

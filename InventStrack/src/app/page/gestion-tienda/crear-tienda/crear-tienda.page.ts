@@ -15,9 +15,8 @@ export class CrearTiendaPage implements OnInit {
     direccion: '',
     ciudad: ''
   };
-  router: any;
 
-  constructor(private tiendasService: TiendasService) {}
+  constructor(private tiendasService: TiendasService, private router : Router) {}
 
   ngOnInit() {
   }
@@ -26,10 +25,12 @@ export class CrearTiendaPage implements OnInit {
     this.tiendasService.agregarNuevaTienda(this.nuevaTienda).subscribe({
       next: (response) => {
         console.log('Tienda creada con éxito', response);
+        alert('Tienda creada con exito')
         // Aquí puedes redirigir al usuario o mostrar un mensaje de éxito
       },
       error: (error) => {
         console.error('Error al crear tienda', error);
+        alert('Error al crear la tienda');
         // Aquí puedes manejar el error, por ejemplo, mostrar un mensaje de error al usuario
       }
     });
@@ -37,8 +38,5 @@ export class CrearTiendaPage implements OnInit {
   goBack() {
     this.router.navigate(['/gestion-tienda']);  // Ajusta la ruta según la página que quieras
   }
-
-
-
 
 }

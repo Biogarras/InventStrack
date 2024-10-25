@@ -11,12 +11,10 @@ export class EliminarTiendaPage implements OnInit {
 
   id: number | undefined;
 
-  constructor(private tiendasService :TiendasService , private alertController: AlertController) { }
+  constructor(private tiendasService: TiendasService, private alertController: AlertController) { }
 
-  ngOnInit() {
-  }
-  // Función para eliminar tienda
-  // Función para eliminar tienda
+  ngOnInit() { }
+
   eliminarTienda() {
     if (this.id !== undefined && this.id > 0) {
       this.tiendasService.eliminarTienda(this.id).subscribe({
@@ -42,7 +40,6 @@ export class EliminarTiendaPage implements OnInit {
     }
   }
 
-  // Función para mostrar alertas genéricas
   async mostrarAlerta(header: string, message: string) {
     const alert = await this.alertController.create({
       header,
@@ -51,5 +48,4 @@ export class EliminarTiendaPage implements OnInit {
     });
     await alert.present();
   }
-
 }

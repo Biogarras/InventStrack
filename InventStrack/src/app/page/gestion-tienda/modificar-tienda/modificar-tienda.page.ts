@@ -35,14 +35,18 @@ export class ModificarTiendaPage implements OnInit {
       this._tiendaService.obtenerTiendaPorId(id).subscribe((response: HttpResponse<Tienda>) => {
         if (response.body) {
           this.tienda = response.body;
+          console.log('Tienda cargada:', this.tienda); // Verifica si el ID se asigna correctamente
         }
       });
+    } else {
+      console.error('ID de la tienda no encontrado en la URL');
     }
   }
 
   modificarTienda(tienda: Tienda): Observable<HttpResponse<any>> {
     // Asegúrate de que tienda.id_tienda está presente y correcto
     if (!tienda.id_tienda) {
+      console.error("El ID de la tienda es requerido para modificar", tienda); 
       throw new Error("El ID de la tienda es requerido para modificar");
     }
     // Realiza la llamada PUT para modificar la tienda
@@ -56,6 +60,10 @@ export class ModificarTiendaPage implements OnInit {
         });
       })
     );
+  }
+
+  goBack() {
+    this.router.navigate(['/gestion-tienda']);  // Ajusta la ruta según la página que quieras
   }
 
 }
