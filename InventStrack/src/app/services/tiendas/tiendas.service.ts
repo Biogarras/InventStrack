@@ -39,10 +39,8 @@ export class TiendasService {
           nombre_tienda: response.body?.nombre_tienda || null,
           direccion: response.body?.direccion || null,
           ciudad: response.body?.ciudad || null,
-          created_at: response.body?.created_at || null,
-          deleted_at: null // Asumimos que una tienda recién creada no está eliminada
-          ,
-          id_tienda: null
+          // Asumimos que una tienda recién creada no está eliminada
+      
         };
         return new HttpResponse({
           body: tiendaCreada,
@@ -59,4 +57,37 @@ export class TiendasService {
     const params = new HttpParams().set('id', `eq.${id}`);
     return this.apiConfig.patch<Tienda>(this.path, tienda, params);
   }
+
+  // Obtener tienda por ID
+  obtenerTiendaPorId(id: number): Observable<HttpResponse<Tienda>> {
+    return this.apiConfig.get<Tienda>(`tiendas/${id}`);
+  }
+  
+
+  modificarTienda(tienda: Tienda): Observable<HttpResponse<Tienda>> {
+    return this.apiConfig.patch<Tienda>(`tiendas/${tienda.id_tienda}`, tienda).pipe(
+      map(response => {
+        return new HttpResponse({
+          body: response.body,  // Aquí deberías acceder a response.body directamente
+          headers: response.headers,
+          status: response.status,
+          statusText: response.statusText,
+        });
+      })
+    );
+  }
+  // Eliminar una tienda por su ID (soft delete)
+  eliminarTienda(id: number): Observable<HttpResponse<any>> {
+  const body = { deleted_at: new Date().toISOString() }; // Establece la fecha actual
+  return this.apiConfig.patch(`tiendas/${id}`, body).pipe(
+    map(response => {
+      return new HttpResponse({
+        body: response.body,  // En este caso, el body podría ser relevante
+        headers: response.headers,
+        status: response.status,
+        statusText: response.statusText,
+      });
+    })
+  );
+}
 }

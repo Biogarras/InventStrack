@@ -8,11 +8,7 @@ import { Usuario } from 'src/app/models/usuario';
   providedIn: 'root'
 })
 export class AutentificacionService {
-  logout() {
-    throw new Error('Method not implemented.');
-  }
- 
- 
+  
   constructor(private usuarioService: UsuarioService) { }
 
   autentificacion(nombreUsuario: string, password: string): Observable<boolean> {
@@ -20,6 +16,7 @@ export class AutentificacionService {
       map((usuario: Usuario) => {
         // Aquí debes validar si la contraseña es correcta
         if (usuario && usuario.password === password) { // Asegúrate de ajustar esto si usas encriptación
+          localStorage.setItem('authToken', 'some-token');
           return true;
         } else {
           return false;
@@ -31,4 +28,11 @@ export class AutentificacionService {
       })
     );
   }
+
+  logout() {
+    // Eliminar cualquier información de autenticación
+    localStorage.removeItem('authToken'); // Elimina el token o la información del usuario
+    console.log('Sesión cerrada correctamente');
+  }
+
 }

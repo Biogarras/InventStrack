@@ -46,6 +46,7 @@ export class ApiconfigService {
       catchError(this.handlerError)
     );
   }
+
   patch<T>(path: string, data: any, params?: HttpParams): Observable<HttpResponse<T>> {
     return this.httpClient.patch<T>(`${this.urlBase}/${path}`, data, {
       headers: this.getHeaders(),
@@ -56,6 +57,8 @@ export class ApiconfigService {
       catchError(this.handlerError)
     );
   }
+
+  
   delete<T>(path: string, params?: HttpParams): Observable<HttpResponse<T>> {
     return this.httpClient.delete<T>(`${this.urlBase}/${path}`, {
       headers: this.getHeaders(),
@@ -66,5 +69,6 @@ export class ApiconfigService {
       catchError(this.handlerError)
     );
   }
+
 }
 
