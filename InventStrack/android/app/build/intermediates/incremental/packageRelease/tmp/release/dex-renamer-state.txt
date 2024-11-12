@@ -1,0 +1,7 @@
+#Fri Nov 08 19:40:04 CLST 2024
+base.0=C\:\\Users\\reyes\\Downloads\\InventStrack\\InventStrack\\InventStrack\\android\\app\\build\\intermediates\\dex\\release\\mergeDexRelease\\classes.dex
+base.1=C\:\\Users\\reyes\\Downloads\\InventStrack\\InventStrack\\InventStrack\\android\\app\\build\\intermediates\\global_synthetics_dex\\release\\classes.dex
+path.0=classes.dex
+path.1=classes.dex
+renamed.0=classes.dex
+renamed.1=classes2.dex
