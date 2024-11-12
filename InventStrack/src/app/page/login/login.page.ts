@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AutentificacionService } from 'src/app/services/autenticacion/autenticacion.service';
-import { firstValueFrom } from 'rxjs';  
+import { firstValueFrom } from 'rxjs'; 
+import { NavController } from '@ionic/angular'; 
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ export class LoginPage implements OnInit {
   nombreUsuario: string = ""; 
   password: string = ""; 
 
-  constructor(private _authService: AutentificacionService, private router: Router) { }
+  constructor(private _authService: AutentificacionService, private router: Router, private navCtrl:NavController) { }
 
   ngOnInit() {}
 
@@ -30,7 +31,7 @@ export class LoginPage implements OnInit {
       if (isAuthenticated) {
         console.info("Usuario autenticado");
         // Redirigir al inicio si el login es exitoso
-        this.router.navigate(['/inicio'], {
+        this.navCtrl.navigateRoot(['inicio'], {
           state: {
             usuario: this.nombreUsuario // Pasar el nombre de usuario
           }
@@ -46,8 +47,4 @@ export class LoginPage implements OnInit {
     }
   }
 
-  forgotPassword() {
-    // Lógica para "Olvidé mi contraseña"
-    console.log('Olvidé mi contraseña');
-  }
 }

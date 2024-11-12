@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TiendasService } from 'src/app/services/tiendas/tiendas.service';
 import { Tienda } from 'src/app/models/Tienda/tienda';
 import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 
 @Component({
@@ -13,7 +14,7 @@ export class VerTiendasPage implements OnInit {
 
   tiendas: Tienda [] = [];
 
-  constructor(private tiendasService: TiendasService ,private router : Router) { }
+  constructor(private tiendasService: TiendasService ,private router : Router, private navCtrl :NavController) { }
 
   ngOnInit(){
     this.cargarTiendas();
@@ -28,7 +29,7 @@ export class VerTiendasPage implements OnInit {
     }
 
     goBack() {
-      this.router.navigate(['/gestion-tienda']);  // Ajusta la ruta según la página que quieras
+      this.navCtrl.navigateRoot(['gestion-tienda']);  // Ajusta la ruta según la página que quieras
     }
 
     
