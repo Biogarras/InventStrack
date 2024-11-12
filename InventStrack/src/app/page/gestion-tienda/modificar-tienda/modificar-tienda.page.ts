@@ -35,7 +35,10 @@ export class ModificarTiendaPage implements OnInit {
       this._tiendaService.obtenerTiendaPorId(id).subscribe((response: HttpResponse<Tienda>) => {
         if (response.body) {
           this.tienda = response.body;
+          this.tienda.id_tienda = id;  // Aseguramos que la ID esté asignada en el objeto tienda
           console.log('Tienda cargada:', this.tienda); // Verifica si el ID se asigna correctamente
+        } else {
+          console.error('No se encontró la tienda en la respuesta del servidor.');
         }
       });
     } else {
@@ -44,19 +47,21 @@ export class ModificarTiendaPage implements OnInit {
   }
 
   modificarTienda(tienda: Tienda): Observable<HttpResponse<any>> {
-    // Asegúrate de que tienda.id_tienda está presente y correcto
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    // Verifica que tienda.id_tienda tenga un valor antes de continuar
     if (!tienda.id_tienda) {
       console.error("El ID de la tienda es requerido para modificar", tienda); 
       throw new Error("El ID de la tienda es requerido para modificar");
     }
-    // Realiza la llamada PUT para modificar la tienda
-    return this.apiConfig.patch<Tienda>(`tiendas?id=eq.${tienda.id_tienda}`, tienda).pipe(
+    
+    // Realiza la llamada a la API utilizando el ID correcto en la URL
+    return this.apiConfig.patch<Tienda>(`tiendas/${tienda.id_tienda}`, tienda).pipe(
       map(response => {
         return new HttpResponse({
           body: response.body,
           headers: response.headers,
           status: response.status,
-          statusText: response.statusText
+          statusText: response.statusText,
         });
       })
     );
