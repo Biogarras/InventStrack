@@ -1,31 +1,29 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Modificar Tienda</ion-title>
-    <ion-buttons slot="end">
+    <ion-buttons slot="start">
       <ion-button (click)="goBack()">Volver</ion-button>
     </ion-buttons>
+    <ion-title>Modificar Tienda</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <form (ngSubmit)="modificarTienda(tienda)">
-
-
-    <ion-item>
-      <ion-label position="floating">Nombre de la Tienda</ion-label>
-      <ion-input [(ngModel)]="tienda.nombre_tienda" name="nombre_tienda" required></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Dirección</ion-label>
-      <ion-input [(ngModel)]="tienda.direccion" name="direccion" required></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Ciudad</ion-label>
-      <ion-input [(ngModel)]="tienda.ciudad" name="ciudad" required></ion-input>
-    </ion-item>
-
-    <ion-button expand="full" type="submit">Modificar Tienda</ion-button>
-  </form>
+  <ng-container *ngIf="modificarTienda">
+    <form>
+      <ion-item>
+        <ion-label position="stacked">Nombre</ion-label>
+        <ion-input [(ngModel)]="modificarTienda.nombre_tienda" name="nombre_tienda"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Dirección</ion-label>
+        <ion-input [(ngModel)]="modificarTienda.direccion" name="direccion"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Ciudad</ion-label>
+        <ion-input [(ngModel)]="modificarTienda.ciudad" name="ciudad"></ion-input>
+      </ion-item>
+    </form>
+  </ng-container>
+  <ion-button expand="full" (click)="guardarCambios()">Guardar Cambios</ion-button>
+  <ion-button expand="full" (click)="eliminarTienda()">Eliminar Tienda</ion-button>
 </ion-content>

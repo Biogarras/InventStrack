@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { Tienda } from 'src/app/models/Tienda/tienda';
 import { ApiconfigService } from '../apiconfig/apiconfig.service';
 import { HttpParams, HttpResponse } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { CrearTienda } from 'src/app/models/Tienda/creartienda';
+import { ModificarTiendaPage } from 'src/app/page/gestion-tienda/modificar-tienda/modificar-tienda.page';
+import { ModificarTienda } from 'src/app/models/Tienda/modificartienda';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,8 @@ export class TiendasService {
 
   // Obtener todas las tiendas que no han sido eliminadas (deleted_at = null)
   obtenerTiendas(): Observable<HttpResponse<Tienda[]>> {
-    const params = new HttpParams().set('select', '*');
+    const params = new HttpParams()
+                   .set('select', '*');
     return this.apiConfig.get<Tienda[]>(this.path, params).pipe(
       map(response => {
         // Filtrar tiendas que no están eliminadas
@@ -52,30 +55,46 @@ export class TiendasService {
     );
   }
 
-  // Actualizar una tienda por su ID
-  actualizarTienda(tienda: CrearTienda, id: number): Observable<HttpResponse<Tienda>> {
-    const params = new HttpParams().set('id', `eq.${id}`);
-    return this.apiConfig.patch<Tienda>(this.path, tienda, params);
-  }
-
   // Obtener tienda por ID
-  obtenerTiendaPorId(id: number): Observable<HttpResponse<Tienda>> {
-    return this.apiConfig.get<Tienda>(`tiendas/${id}`);
-  }
-  
+  obtenerTiendaPorId(id: number): Observable<ModificarTienda> {
+    const  params = new HttpParams()
+      .set('select', '*')
+      .set('id_tienda', `eq.${id}`);
 
-  modificarTienda(tienda: Tienda): Observable<HttpResponse<Tienda>> {
-    return this.apiConfig.patch<Tienda>(`tiendas/${tienda.id_tienda}`, tienda).pipe(
-      map(response => {
-        return new HttpResponse({
-          body: response.body,  // Aquí deberías acceder a response.body directamente
-          headers: response.headers,
-          status: response.status,
-          statusText: response.statusText,
-        });
+    return this.apiConfig.get<HttpResponse<ModificarTienda>>('tiendas', params).pipe(
+      map((response) => {
+        console.log('Respuesta del servidor:', response.body);
+        if (!response.body) {
+          // Manejo explícito del caso en que `body` sea null
+          throw new Error('No se encontró la tienda con el ID especificado.');
+        }
+        return response.body as ModificarTienda;
+      }),
+      catchError((error) => {
+        console.error('Error al obtener la tienda', error);
+        return throwError(() => new Error('Error al obtener la tienda. Por favor, inténtelo más tarde.'));
       })
+      
     );
   }
+
+modificarTienda(id:number , datosParciales: ModificarTienda):Observable<Tienda>{
+  const params = new HttpParams()
+    .set('id_tienda', `eq.${id}`); 
+  //curl -X PATCH 'https://cmxpunwlvhypskpdnsoc.supabase.co/rest/v1/tiendas?some_column=eq.someValue' \
+  return this.apiConfig.patch<Tienda>(this.path,datosParciales,params).pipe(
+    map((response) => {
+      if (!response.body){
+        throw new Error('Error al actualizar la tienda.');
+      }
+      return response.body;
+    }),
+    catchError((error) =>{
+      console.error('Error al modificar la tienda:', error);
+      return throwError(() => new Error('Error al modificar la tienda. Por favor, intentelo mas tarde.'));
+    })
+  );
+}
   // Eliminar una tienda por su ID (soft delete)
   eliminarTienda(id: number): Observable<HttpResponse<any>> {
   const body = { deleted_at: new Date().toISOString() }; // Establece la fecha actual

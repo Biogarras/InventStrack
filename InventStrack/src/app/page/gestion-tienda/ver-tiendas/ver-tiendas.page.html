@@ -15,7 +15,7 @@
         <p>{{ tienda.direccion }}, {{ tienda.ciudad }}</p>
         <p>Creado: {{ tienda.created_at | date }}</p>
       </ion-label>
-      <ion-button [routerLink]="['/gestion-tienda/modificar-tienda', tienda.id_tienda]" fill="outline">
+      <ion-button (click)="tienda.id_tienda ? editarTienda(tienda.id_tienda) : null" fill="outline">
         Modificar
       </ion-button>
     </ion-item>

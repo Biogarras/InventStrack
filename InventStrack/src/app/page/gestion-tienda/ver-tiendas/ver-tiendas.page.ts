@@ -31,6 +31,10 @@ export class VerTiendasPage implements OnInit {
     goBack() {
       this.navCtrl.navigateRoot(['gestion-tienda']);  // Ajusta la ruta según la página que quieras
     }
+    
+    editarTienda(id_tienda: number) {
+      this.navCtrl.navigateRoot(`/gestion-tienda/modificar-tienda/${id_tienda}`);
+    }
 
     
   }

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TiendasService } from 'src/app/services/tiendas/tiendas.service';
-import { Tienda } from 'src/app/models/Tienda/tienda';
-import { HttpResponse } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
-import { ApiconfigService } from 'src/app/services/apiconfig/apiconfig.service';
+import { NavController } from '@ionic/angular'; 
+import { CrearTienda } from 'src/app/models/Tienda/creartienda';
+import { ModificarTienda } from 'src/app/models/Tienda/modificartienda';
+import { HttpParams } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-modificar-tienda',
@@ -13,62 +14,109 @@ import { ApiconfigService } from 'src/app/services/apiconfig/apiconfig.service';
 })
 export class ModificarTiendaPage implements OnInit {
 
-  tienda: Tienda = {
-    id_tienda: null,
-    nombre_tienda: '',
-    direccion: '',
+  modificarTienda: ModificarTienda = {
     ciudad: '',
-    created_at: '',
-    deleted_at: null
+    created_at: null,
+    deleted_at: null,
+    direccion: '',
+    id_tienda: 6,
+    nombre_tienda: '',
+    estado:'',
+    
   };
+  formularioTienda: any;
 
-  constructor( private apiConfig : ApiconfigService , private _tiendaService : TiendasService, private router: Router , private route : ActivatedRoute) { }
+  constructor( private navCtrl: NavController,
+               private _tiendaService : TiendasService,
+               private router: Router, 
+               private route : ActivatedRoute) { }
+
+
+
+               
+  datosCargados = false;
 
   ngOnInit() {
 
-    this.cargarTienda(); // Llamamos al método para cargar la tienda
+    console.log('ngOnInit ejecutado'); 
+    this.cargarTienda();
+    
+    console.log('aer aer aer....:',this.modificarTienda) // Llamamos al método para cargar la tienda
   }
 
   cargarTienda() {
-    const id = Number(this.route.snapshot.paramMap.get('id')); // Capturamos el ID de la URL
+    const id = Number(this.route.snapshot.paramMap.get('id'));
     if (id) {
-      this._tiendaService.obtenerTiendaPorId(id).subscribe((response: HttpResponse<Tienda>) => {
-        if (response.body) {
-          this.tienda = response.body;
-          this.tienda.id_tienda = id;  // Aseguramos que la ID esté asignada en el objeto tienda
-          console.log('Tienda cargada:', this.tienda); // Verifica si el ID se asigna correctamente
-        } else {
-          console.error('No se encontró la tienda en la respuesta del servidor.');
+      this._tiendaService.obtenerTiendaPorId(id).subscribe({
+        next: (response) => {
+          if (response) {
+            this.modificarTienda = response;
+            this.datosCargados = true;  // Asigna toda la tienda desde la respuesta
+            console.log('Tienda cargada:', this.modificarTienda);
+            console.log('ID de la tienda cargada:', this.modificarTienda.id_tienda);
+          } else {
+            console.error('No se encontró la tienda en la respuesta del servidor.');
+            this.datosCargados = false;
+          }
+          
+        },
+        error: (err) => {
+          console.error('Error al cargar la tienda:', err);
         }
       });
     } else {
       console.error('ID de la tienda no encontrado en la URL');
     }
   }
+  
 
-  modificarTienda(tienda: Tienda): Observable<HttpResponse<any>> {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    // Verifica que tienda.id_tienda tenga un valor antes de continuar
-    if (!tienda.id_tienda) {
-      console.error("El ID de la tienda es requerido para modificar", tienda); 
-      throw new Error("El ID de la tienda es requerido para modificar");
+  guardarCambios(){
+    const iDTienda = this.modificarTienda?.id_tienda;
+    console.log('Tienda cargadadasdsadasadd:', this.modificarTienda);
+    if (iDTienda !== null && iDTienda !== undefined){
+      const datosParciales ={
+        ciudad:this.modificarTienda.ciudad,
+        direccion:this.modificarTienda.direccion,
+        nombre_tienda:this.modificarTienda.nombre_tienda,
+         
+      };
+      console.log('Datos enviados:', { id: iDTienda, datosParciales });
+
+      this._tiendaService.modificarTienda(iDTienda,datosParciales).subscribe({
+        next:(tiendaActualizada) =>{
+          this.modificarTienda=datosParciales
+          console.log('Tienda modificada exitosamente:', tiendaActualizada);
+           this.navCtrl.navigateRoot(['gestion-tienda']);
+        },
+      error: (err) =>{
+        console.error('Error al guardar los cambios:', err.message);
+      },
+
+    });
+    }else{
+      console.error('ID de la tienda no es valido.')
     }
     
-    // Realiza la llamada a la API utilizando el ID correcto en la URL
-    return this.apiConfig.patch<Tienda>(`tiendas/${tienda.id_tienda}`, tienda).pipe(
-      map(response => {
-        return new HttpResponse({
-          body: response.body,
-          headers: response.headers,
-          status: response.status,
-          statusText: response.statusText,
-        });
-      })
-    );
+  }
+
+  eliminarTienda() {
+    if (this.modificarTienda.id_tienda) {
+      this._tiendaService.eliminarTienda(this.modificarTienda.id_tienda).subscribe({
+        next: () => {
+          console.log('Tienda eliminada correctamente');
+          this.navCtrl.navigateRoot(['gestion-tienda']); // Redirige a la lista de tiendas después de la eliminación
+        },
+        error: (err) => {
+          console.error('Error al eliminar la tienda:', err);
+        }
+      });
+    } else {
+      console.error('ID de tienda no encontrado');
+    }
   }
 
   goBack() {
-    this.router.navigate(['/gestion-tienda']);  // Ajusta la ruta según la página que quieras
+    this.navCtrl.navigateRoot(['gestion-tienda']);  // Ajusta la ruta según la página que quieras
   }
 
 }

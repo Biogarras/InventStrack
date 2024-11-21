@@ -7,6 +7,7 @@ export interface Tienda{
     ciudad?: string | null;
     created_at?: string| null;
     deleted_at?: string | null;
+    estado?: string | null;
     
     
     
