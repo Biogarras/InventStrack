@@ -23,12 +23,19 @@ const routes: Routes = [
     path: 'gestion-tienda',
     loadChildren: () => import('./page/gestion-tienda/gestion-tienda.module').then( m => m.GestionTiendaPageModule)
   },
+
+  {
+    path: 'gestion-producto',
+    loadChildren: () => import('./page/gestion-producto/gestion-producto.module').then( m => m.GestionProductoPageModule)
+  },
   
   {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
   },
+  
+
 
 ];
 

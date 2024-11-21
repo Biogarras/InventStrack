@@ -23,7 +23,7 @@ export class InicioPage {
 
   // Método para gestionar productos
   gestionarProductos() {
-    this.navCtrl.navigateRoot(['gestionar-productos']); // Cambia la ruta según tu página de gestión de productos
+    this.navCtrl.navigateRoot(['gestion-producto']); // Cambia la ruta según tu página de gestión de productos
   }
   gestionarInventarios() {
     this.navCtrl.navigateRoot(['gestion-inventario']); // Cambia la ruta según tu página de gestión de productos

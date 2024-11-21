@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ModificarTiendaPage implements OnInit {
 
-  modificarTienda: ModificarTienda = {
+  baseTienda: ModificarTienda = {
     ciudad: '',
     created_at: null,
     deleted_at: null,
@@ -41,7 +41,7 @@ export class ModificarTiendaPage implements OnInit {
     console.log('ngOnInit ejecutado'); 
     this.cargarTienda();
     
-    console.log('aer aer aer....:',this.modificarTienda) // Llamamos al método para cargar la tienda
+    console.log('aer aer aer....:',this.baseTienda) // Llamamos al método para cargar la tienda
   }
 
   cargarTienda() {
@@ -50,10 +50,10 @@ export class ModificarTiendaPage implements OnInit {
       this._tiendaService.obtenerTiendaPorId(id).subscribe({
         next: (response) => {
           if (response) {
-            this.modificarTienda = response;
+            this.baseTienda = response;
             this.datosCargados = true;  // Asigna toda la tienda desde la respuesta
-            console.log('Tienda cargada:', this.modificarTienda);
-            console.log('ID de la tienda cargada:', this.modificarTienda.id_tienda);
+            console.log('Tienda cargada:', this.baseTienda);
+            console.log('ID de la tienda cargada:', this.baseTienda.id_tienda);
           } else {
             console.error('No se encontró la tienda en la respuesta del servidor.');
             this.datosCargados = false;
@@ -71,20 +71,20 @@ export class ModificarTiendaPage implements OnInit {
   
 
   guardarCambios(){
-    const iDTienda = this.modificarTienda?.id_tienda;
-    console.log('Tienda cargadadasdsadasadd:', this.modificarTienda);
+    const iDTienda = this.baseTienda?.id_tienda;
+    console.log('Tienda cargadadasdsadasadd:', this.baseTienda);
     if (iDTienda !== null && iDTienda !== undefined){
       const datosParciales ={
-        ciudad:this.modificarTienda.ciudad,
-        direccion:this.modificarTienda.direccion,
-        nombre_tienda:this.modificarTienda.nombre_tienda,
+        ciudad:this.baseTienda.ciudad,
+        direccion:this.baseTienda.direccion,
+        nombre_tienda:this.baseTienda.nombre_tienda,
          
       };
       console.log('Datos enviados:', { id: iDTienda, datosParciales });
 
       this._tiendaService.modificarTienda(iDTienda,datosParciales).subscribe({
         next:(tiendaActualizada) =>{
-          this.modificarTienda=datosParciales
+          this.baseTienda=datosParciales
           console.log('Tienda modificada exitosamente:', tiendaActualizada);
            this.navCtrl.navigateRoot(['gestion-tienda']);
         },
@@ -100,8 +100,8 @@ export class ModificarTiendaPage implements OnInit {
   }
 
   eliminarTienda() {
-    if (this.modificarTienda.id_tienda) {
-      this._tiendaService.eliminarTienda(this.modificarTienda.id_tienda).subscribe({
+    if (this.baseTienda.id_tienda) {
+      this._tiendaService.eliminarTienda(this.baseTienda.id_tienda).subscribe({
         next: () => {
           console.log('Tienda eliminada correctamente');
           this.navCtrl.navigateRoot(['gestion-tienda']); // Redirige a la lista de tiendas después de la eliminación

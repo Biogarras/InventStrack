@@ -8,19 +8,19 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ng-container *ngIf="modificarTienda">
+  <ng-container *ngIf="baseTienda">
     <form>
       <ion-item>
         <ion-label position="stacked">Nombre</ion-label>
-        <ion-input [(ngModel)]="modificarTienda.nombre_tienda" name="nombre_tienda"></ion-input>
+        <ion-input [(ngModel)]="baseTienda.nombre_tienda" name="nombre_tienda"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Dirección</ion-label>
-        <ion-input [(ngModel)]="modificarTienda.direccion" name="direccion"></ion-input>
+        <ion-input [(ngModel)]="baseTienda.direccion" name="direccion"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Ciudad</ion-label>
-        <ion-input [(ngModel)]="modificarTienda.ciudad" name="ciudad"></ion-input>
+        <ion-input [(ngModel)]="baseTienda.ciudad" name="ciudad"></ion-input>
       </ion-item>
     </form>
   </ng-container>
