@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-gestion-inventario',
@@ -8,18 +9,19 @@ import { Router } from '@angular/router';
 })
 export class GestionInventarioPage implements OnInit {
 
-  constructor(private router: Router) { }
+
+  constructor(private router: Router , private navCtrl:NavController) { }
 
   ngOnInit() {}
 
   // Navega a la página de creación de inventario
   crearInventario() {
-    this.router.navigate(['/crear-inventario']);
+    this.navCtrl.navigateRoot(['gestion-inventario/crearinventario']);
   }
 
   // Navega a la página de visualización de inventarios
   verInventarios() {
-    this.router.navigate(['/ver-inventarios']);
+    this.navCtrl.navigateRoot(['gestion-tienda/ver-tiendas']);
   }
 
   // Navega a la página de modificación de inventario
@@ -34,6 +36,6 @@ export class GestionInventarioPage implements OnInit {
 
   // Vuelve a la página de inicio o a la anterior
   goBack() {
-    this.router.navigate(['/inicio']);  // Ajusta la ruta según la página que quieras
+    this.navCtrl.navigateRoot(['/inicio']);  // Ajusta la ruta según la página que quieras
   }
 }

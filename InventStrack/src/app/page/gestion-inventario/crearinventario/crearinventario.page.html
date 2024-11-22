@@ -1,13 +1,27 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>crearinventario</ion-title>
+    <ion-title>Crear Inventario</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">crearinventario</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Seleccionar Tiendas</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let tienda of tiendas">
+          <ion-label>{{ tienda.nombre_tienda }}</ion-label>
+          <ion-checkbox
+            slot="start"
+            [(ngModel)]="tiendaSeleccionada[tienda.id_tienda]"
+          ></ion-checkbox>
+        </ion-item>
+      </ion-list>
+      <ion-button expand="block" (click)="crearInventarios()">
+        Levantar Inventario
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

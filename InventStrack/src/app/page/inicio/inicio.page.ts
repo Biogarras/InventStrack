@@ -20,13 +20,15 @@ export class InicioPage {
   gestionarTiendas() {
     this.navCtrl.navigateRoot(['gestion-tienda']); // Cambia la ruta según tu página de gestión de tiendas
   }
-
   // Método para gestionar productos
   gestionarProductos() {
     this.navCtrl.navigateRoot(['gestion-producto']); // Cambia la ruta según tu página de gestión de productos
   }
   gestionarInventarios() {
     this.navCtrl.navigateRoot(['gestion-inventario']); // Cambia la ruta según tu página de gestión de productos
+  }
+  realizarInventario() {
+    this.navCtrl.navigateRoot(['realizar-inventario']); // Cambia la ruta según tu página de gestión de productos
   }
 
 
