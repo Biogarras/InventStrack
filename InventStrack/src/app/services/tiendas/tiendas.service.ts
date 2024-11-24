@@ -22,6 +22,7 @@ export class TiendasService {
                    .set('select', '*');
     return this.apiConfig.get<Tienda[]>(this.path, params).pipe(
       map(response => {
+        // Agregar este log
         // Filtrar tiendas que no están eliminadas
         const tiendasFiltradas = response.body?.filter(tienda => tienda.deleted_at === null);
         return new HttpResponse({
@@ -42,8 +43,7 @@ export class TiendasService {
           nombre_tienda: response.body?.nombre_tienda || null,
           direccion: response.body?.direccion || null,
           ciudad: response.body?.ciudad || null,
-          // Asumimos que una tienda recién creada no está eliminada
-      
+          // Asumimos que una tienda recién creada no está eliminada 
         };
         return new HttpResponse({
           body: tiendaCreada,
@@ -60,14 +60,16 @@ export class TiendasService {
     const  params = new HttpParams()
       .set('select', '*')
       .set('id_tienda', `eq.${id}`);
+      console.log(params.toString())
 
-    return this.apiConfig.get<HttpResponse<ModificarTienda>>('tiendas', params).pipe(
+    return this.apiConfig.get<HttpResponse<ModificarTienda[]>>('tiendas', params).pipe(
       map((response) => {
         console.log('Respuesta del servidor:', response.body);
         if (!response.body) {
           // Manejo explícito del caso en que `body` sea null
           throw new Error('No se encontró la tienda con el ID especificado.');
         }
+        const tienda = (response.body)
         return response.body as ModificarTienda;
       }),
       catchError((error) => {
@@ -108,5 +110,26 @@ modificarTienda(id:number , datosParciales: ModificarTienda):Observable<Tienda>{
       });
     })
   );
+}
+
+obtenerTiendas2(): Observable<HttpResponse<Tienda[]>> {
+  const params = new HttpParams()
+                 .set('select', 'id_tienda,nombre_tienda,deleted_at');
+  return this.apiConfig.get<Tienda[]>(this.path, params).pipe(
+    map(response => {
+      console.log('Respuesta de tiendas:', response.body); 
+      const tiendasFiltradas = response.body?.filter(tienda => tienda.deleted_at === null);
+      console.log('aeeeeeeer',tiendasFiltradas)
+      return new HttpResponse({
+        body: tiendasFiltradas,
+        headers: response.headers,
+        status: response.status,
+        statusText: response.statusText, 
+      });
+      
+    })
+    
+  );
+  
 }
 }

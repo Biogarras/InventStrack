@@ -14,16 +14,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ModificarTiendaPage implements OnInit {
 
-  baseTienda: ModificarTienda = {
-    ciudad: '',
-    created_at: null,
-    deleted_at: null,
-    direccion: '',
-    id_tienda: 6,
-    nombre_tienda: '',
-    estado:'',
-    
-  };
+  baseTienda!:ModificarTienda;
   formularioTienda: any;
 
   constructor( private navCtrl: NavController,
@@ -48,11 +39,12 @@ export class ModificarTiendaPage implements OnInit {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (id) {
       this._tiendaService.obtenerTiendaPorId(id).subscribe({
-        next: (response) => {
+        next: (response:ModificarTienda) => {
           if (response) {
+            console.log('chupalo',response.id_tienda)
             this.baseTienda = response;
+            console.log('Tienda cargadasss:', this.baseTienda);
             this.datosCargados = true;  // Asigna toda la tienda desde la respuesta
-            console.log('Tienda cargada:', this.baseTienda);
             console.log('ID de la tienda cargada:', this.baseTienda.id_tienda);
           } else {
             console.error('No se encontró la tienda en la respuesta del servidor.');

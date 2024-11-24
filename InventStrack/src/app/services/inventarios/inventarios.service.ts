@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { ApiconfigService } from '../apiconfig/apiconfig.service';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { HttpParams, HttpResponse } from '@angular/common/http';
+import { CrearInventario } from 'src/app/models/Inventario/crearInventario';
+import { Inventario } from 'src/app/models/Inventario/inventario';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +15,14 @@ export class InventariosService {
   constructor( private apiConfig: ApiconfigService) { }
 
   // Crear un nuevo inventario
-  crearInventario(data: { id_tienda: number; estado: string; id_encargado: number }): Observable<HttpResponse<any>> {
-    return this.apiConfig.post<any>(this.path, data).pipe(
+  crearInventario(inventario: CrearInventario):Observable<HttpResponse<CrearInventario>> {
+    return this.apiConfig.post<CrearInventario>(this.path, inventario).pipe(
       map(response => {
-        if (!response.body) {
-          throw new Error('No se pudo crear el inventario.');
-        }
+        const inventarioCreado: CrearInventario={
+          id_tienda: response.body?.id_tienda || null,
+          estado: response.body?.estado || null,
+          id_encargado: response.body?.id_encargado || null,
+        };      
         return new HttpResponse({
           body: response.body,
           headers: response.headers,
@@ -47,25 +51,6 @@ export class InventariosService {
       catchError(error => {
         console.error('Error al obtener inventarios:', error);
         return throwError(() => new Error('Error al obtener inventarios. Por favor, inténtelo más tarde.'));
-      })
-    );
-  }
-
-   // Eliminar un inventario (soft delete)
-   eliminarInventario(id: number): Observable<HttpResponse<any>> {
-    const body = { deleted_at: new Date().toISOString() }; // Marcar como eliminado
-    return this.apiConfig.patch(`${this.path}/${id}`, body).pipe(
-      map(response => {
-        return new HttpResponse({
-          body: response.body,
-          headers: response.headers,
-          status: response.status,
-          statusText: response.statusText,
-        });
-      }),
-      catchError(error => {
-        console.error('Error al eliminar el inventario:', error);
-        return throwError(() => new Error('Error al eliminar el inventario. Por favor, inténtelo más tarde.'));
       })
     );
   }

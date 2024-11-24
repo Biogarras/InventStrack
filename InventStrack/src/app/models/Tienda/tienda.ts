@@ -8,6 +8,7 @@ export interface Tienda{
     created_at?: string| null;
     deleted_at?: string | null;
     estado?: string | null;
+    id_encargad?:number | null;
     
     
     
