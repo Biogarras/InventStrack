@@ -4,20 +4,9 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   
   {
-<<<<<<< HEAD
     path: '',
     redirectTo: 'login', // Redirige al login al inicio
     pathMatch: 'full'
-=======
-
-    path: 'login',
-    loadChildren: () => import('./page/login/login.module').then( m => m.LoginPageModule)
-  },
-  
-  {
-    path: 'inicio',
-    loadChildren: () => import('./page/inicio/inicio.module').then( m => m.InicioPageModule)
->>>>>>> eduardo
   },
   
   {
@@ -50,19 +39,7 @@ const routes: Routes = [
     loadChildren: () => import('./page/inventarios-pendientes/inventarios-pendientes.module').then( m => m.InventariosPendientesPageModule)
   },
 
-  {
-<<<<<<< HEAD
-
-  path: 'detalles-tiendas',
-  loadChildren: () => import('./page/lista-tiendas/detalles-tiendas/detalles-tiendas/detalles-tiendas.module').then( m => m.DetallesTiendasPageModule)
-  }
-=======
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
-  },
-
->>>>>>> eduardo
+  
 ];
 
 @NgModule({
