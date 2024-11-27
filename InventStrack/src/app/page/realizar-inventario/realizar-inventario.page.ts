@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { ProductosService } from 'src/app/services/productos/productos.service';
 
 @Component({
@@ -20,7 +19,7 @@ export class RealizarInventarioPage implements OnInit {
   
 
   stopScan() {
-    BarcodeScanner.stopScan();
+    
   }
 
   saveInventory() {
