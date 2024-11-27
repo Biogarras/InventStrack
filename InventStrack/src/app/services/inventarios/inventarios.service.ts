@@ -70,15 +70,20 @@ export class InventariosService {
   }
 
   obtenerInventariosPendientesPorIdEncargado(idEncargado: number): Observable<HttpResponse<any[]>> {
-    const params = new HttpParams().set('id_encargado', `eq.${idEncargado}`);
+    const params = new HttpParams()
+    .set('id_encargado', `eq.${idEncargado}`)
+    .set('select', 'id_inventario,id_tienda,tiendas(nombre_tienda),Usuario(nombre),fecha_creacion');
+    
     return this.apiConfig.get<any[]>(this.path, params).pipe(
       map((response) => {
+        console.log('dasdasdasdaddas',response)
         return new HttpResponse({
           body: response.body, // Devuelve los inventarios pendientes
           headers: response.headers,
           status: response.status,
           statusText: response.statusText,
         });
+        
       }),
       catchError((error) =>{
           console.error('Error al obtener inventarios pendientes:',error);

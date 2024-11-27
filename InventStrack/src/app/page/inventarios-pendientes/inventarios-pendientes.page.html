@@ -26,9 +26,10 @@
         <!-- Fila de datos -->
         <ion-row *ngFor="let inventario of inventariosPendientes">
           <ion-col size="2">{{ inventario.id_inventario }}</ion-col>
-          <ion-col size="3">{{ inventario.nombre_tienda }}</ion-col>
+          <ion-col size="3">{{ inventario.tiendas.nombre_tienda}}</ion-col>
+          
           <ion-col size="3">{{ inventario.fecha_creacion | date: 'shortDate' }}</ion-col>
-          <ion-col size="3">{{ inventario.nombre_encargado }}</ion-col>
+          <ion-col size="3">{{ inventario.Usuario.nombre }}</ion-col>
           <ion-col size="1">
             <ion-button 
               fill="outline" 
