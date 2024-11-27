@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiconfigService } from '../apiconfig/apiconfig.service';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { HttpParams, HttpResponse } from '@angular/common/http';
-import { CrearInventario } from 'src/app/models/Inventario/crearInventario';
+import { CrearInventario } from 'src/app/models/Inventario/crearinventario';
 import { Inventario } from 'src/app/models/Inventario/inventario';
 
 @Injectable({
