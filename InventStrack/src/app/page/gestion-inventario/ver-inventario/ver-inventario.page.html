@@ -1,0 +1,38 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="goBack()">Volver</ion-button>
+    </ion-buttons>
+    <ion-title>Lista de Inventarios</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card *ngIf="inventarios.length > 0">
+    <ion-card-header>
+      <ion-card-title>Inventarios Creados</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="1"><strong>ID</strong></ion-col>
+          <ion-col size="2"><strong>Tienda</strong></ion-col>
+          <ion-col size="2"><strong>Encargado</strong></ion-col>
+          <ion-col size="2"><strong>Creación</strong></ion-col>
+          <ion-col size="2"><strong>Realización</strong></ion-col>
+          <ion-col size="2"><strong>Estado</strong></ion-col>
+        </ion-row>
+        <ion-row *ngFor="let inventario of inventarios">
+          <ion-col size="1">{{ inventario.id_inventario }}</ion-col>
+          <ion-col size="2">{{ inventario.id_tienda }}</ion-col>
+          <ion-col size="2">{{ inventario.id_encargado }}</ion-col>
+          <ion-col size="2">{{ inventario.fecha_creacion | date: 'short' }}</ion-col>
+          <ion-col size="2">{{ inventario.fecha_realizacion ? (inventario.fecha_realizacion | date: 'short') : 'No realizada' }}</ion-col>
+          <ion-col size="2">
+         
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -29,7 +29,27 @@ const routes: Routes = [
     path: 'gestion-tienda',
     loadChildren: () => import('./page/gestion-tienda/gestion-tienda.module').then( m => m.GestionTiendaPageModule)
   },
-  
+
+  {
+    path: 'gestion-producto',
+    loadChildren: () => import('./page/gestion-producto/gestion-producto.module').then( m => m.GestionProductoPageModule)
+  },
+
+  {
+    path: 'realizar-inventario',
+    loadChildren: () => import('./page/realizar-inventario/realizar-inventario.module').then( m => m.RealizarInventarioPageModule)
+  },
+
+  {
+    path: 'gestion-usuario',
+    loadChildren: () => import('./page/gestion-usuario/gestion-usuario.module').then( m => m.GestionUsuarioPageModule)
+  },
+
+  {
+    path: 'inventarios-pendientes',
+    loadChildren: () => import('./page/inventarios-pendientes/inventarios-pendientes.module').then( m => m.InventariosPendientesPageModule)
+  },
+
   {
 <<<<<<< HEAD
 

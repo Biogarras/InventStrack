@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CrearTienda } from 'src/app/models/Tienda/creartienda';
 import { TiendasService } from 'src/app/services/tiendas/tiendas.service';
 import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular'; 
 
 @Component({
   selector: 'app-crear-tienda',
@@ -16,7 +17,7 @@ export class CrearTiendaPage implements OnInit {
     ciudad: ''
   };
 
-  constructor(private tiendasService: TiendasService, private router : Router) {}
+  constructor(private tiendasService: TiendasService, private router : Router,private navCtrl:NavController) {}
 
   ngOnInit() {
   }
@@ -36,7 +37,7 @@ export class CrearTiendaPage implements OnInit {
     });
   }
   goBack() {
-    this.router.navigate(['/gestion-tienda']);  // Ajusta la ruta según la página que quieras
+    this.navCtrl.navigateRoot(['gestion-tienda']);  // Ajusta la ruta según la página que quieras
   }
 
 }

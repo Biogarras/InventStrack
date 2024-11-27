@@ -4,4 +4,5 @@ export interface CrearTienda{
     direccion:string;
     ciudad: string;
     
+    
 }

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
+import { ModificarTiendaPage } from './modificar-tienda/modificar-tienda.page';
 import { GestionTiendaPage } from './gestion-tienda.page';
 
 const routes: Routes = [
@@ -25,6 +25,10 @@ const routes: Routes = [
     path: '',
     component: GestionTiendaPage
   },
+  {
+    path: 'modificar-tienda/:id', // Ruta con parámetro id
+    component: ModificarTiendaPage
+  }
 
 ];
 
