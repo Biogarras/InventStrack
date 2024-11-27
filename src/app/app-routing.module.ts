@@ -3,10 +3,21 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   
+
+
   {
     path: '',
     redirectTo: 'login', // Redirige al login al inicio
     pathMatch: 'full'
+  },
+  {
+
+    path: 'login',
+    loadChildren: () => import('./page/login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'inicio',
+    loadChildren: () => import('./page/inicio/inicio.module').then( m => m.InicioPageModule)
   },
   
   {
@@ -38,8 +49,7 @@ const routes: Routes = [
     path: 'inventarios-pendientes',
     loadChildren: () => import('./page/inventarios-pendientes/inventarios-pendientes.module').then( m => m.InventariosPendientesPageModule)
   },
-
-  
+ 
 ];
 
 @NgModule({
