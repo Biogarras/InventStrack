@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { CrearInventario } from 'src/app/models/Inventario/crearInventario';
+import { CrearInventario } from 'src/app/models/Inventario/crearinventario';
 import { InventariosService } from 'src/app/services/inventarios/inventarios.service';
 import { TiendasService } from 'src/app/services/tiendas/tiendas.service';
 
