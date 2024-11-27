@@ -1,5 +1,5 @@
 {
-  "name": "InventStrack",
+  "name": "inventstrack",
   "version": "0.0.1",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
@@ -25,7 +25,6 @@
     "@angular/platform-browser": "^18.0.0",
     "@angular/platform-browser-dynamic": "^18.0.0",
     "@angular/router": "^18.0.0",
-    "@capacitor-community/barcode-scanner": "^4.0.1",
     "@capacitor/android": "6.1.2",
     "@capacitor/app": "6.0.1",
     "@capacitor/core": "^6.1.2",
@@ -37,6 +36,7 @@
     "@supabase/supabase-js": "^2.45.4",
     "dotenv": "^16.4.5",
     "ionicons": "^7.0.0",
+    "phonegap-plugin-barcodescanner": "^8.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
