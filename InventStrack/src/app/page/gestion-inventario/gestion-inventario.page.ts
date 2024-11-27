@@ -21,7 +21,7 @@ export class GestionInventarioPage implements OnInit {
 
   // Navega a la página de visualización de inventarios
   verInventarios() {
-    this.navCtrl.navigateRoot(['gestion-tienda/ver-tiendas']);
+    this.navCtrl.navigateRoot(['gestion-inventario/ver-inventario']);
   }
 
   // Navega a la página de modificación de inventario

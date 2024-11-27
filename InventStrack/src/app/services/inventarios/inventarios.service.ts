@@ -54,6 +54,60 @@ export class InventariosService {
       })
     );
   }
+
+  obtenerInventariosPendientesPorId(idTienda: number): Observable<HttpResponse<any[]>> {
+    const params = new HttpParams()
+      .set('id_tienda', idTienda.toString())
+      .set('estado', 'Pendiente por realizar');
+    
+    return this.apiConfig.get<any[]>(this.path, params).pipe(
+      map(response => response),
+      catchError(error => {
+        console.error('Error al obtener inventarios pendientes:', error);
+        return throwError(() => new Error('Error al obtener inventarios pendientes.'));
+      })
+    );
+  }
+
+  obtenerInventariosPendientesPorIdEncargado(idEncargado: number): Observable<HttpResponse<any[]>> {
+    const params = new HttpParams().set('id_encargado', `eq.${idEncargado}`);
+    return this.apiConfig.get<any[]>(this.path, params).pipe(
+      map((response) => {
+        return new HttpResponse({
+          body: response.body, // Devuelve los inventarios pendientes
+          headers: response.headers,
+          status: response.status,
+          statusText: response.statusText,
+        });
+      }),
+      catchError((error) =>{
+          console.error('Error al obtener inventarios pendientes:',error);
+          return throwError(() => new Error('Error al cargar inventarios pendientes.'))
+
+
+      })
+    );
+  }
+
+  actualizarEstadoInventario(idInventario: number, estado: string): Observable<HttpResponse<any>> {
+    return this.apiConfig.patch<any>(`${this.path}/${idInventario}`, { estado }).pipe(
+      map(response => response),
+      catchError(error => {
+        console.error('Error al actualizar estado:', error);
+        return throwError(() => new Error('Error al actualizar el estado del inventario.'));
+      })
+    );
+  }
+
+  guardarDetalleInventario(detalle: any): Observable<HttpResponse<any>> {
+    return this.apiConfig.post<any>('detalle_inventario', detalle).pipe(
+      map(response => response),
+      catchError(error => {
+        console.error('Error al guardar detalle:', error);
+        return throwError(() => new Error('Error al guardar detalle de inventario.'));
+      })
+    );
+  }
 }
 
 

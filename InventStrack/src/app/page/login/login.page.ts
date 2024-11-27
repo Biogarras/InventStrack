@@ -23,18 +23,15 @@ export class LoginPage implements OnInit {
       alert("Por favor, completa ambos campos.");
       return; // Salir de la función si hay campos vacíos
     }
-
     try {
-      // Llamar al servicio de autenticación usando Supabase
+            // Llamar al servicio de autenticación usando Supabase
       const isAuthenticated = await firstValueFrom(this._authService.autentificacion(this.nombreUsuario, this.password));
       
       if (isAuthenticated) {
         console.info("Usuario autenticado");
         // Redirigir al inicio si el login es exitoso
         this.navCtrl.navigateRoot(['inicio'], {
-          state: {
-            usuario: this.nombreUsuario // Pasar el nombre de usuario
-          }
+        state: {usuario: this.nombreUsuario}// Pasar el nombre de usuario
         });
         console.log("Nombre de usuario:", this.nombreUsuario);
       } else {

@@ -8,27 +8,44 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-list *ngIf="tiendas.length > 0; else noTiendas">
-    <ion-item *ngFor="let tienda of tiendas">
-      <ion-label>
-        <h2>{{ tienda.nombre_tienda }}</h2>
-        <p>{{ tienda.direccion }}, {{ tienda.ciudad }}</p>
-        <p>Creado: {{ tienda.created_at | date }}</p>
-      </ion-label>
-      <ion-button (click)="tienda.id_tienda ? editarTienda(tienda.id_tienda) : null" fill="outline">
-        Modificar
-      </ion-button>
-    </ion-item>
-  </ion-list>
+  <!-- Mostrar tiendas si existen -->
+  <ion-card *ngIf="tiendas.length > 0">
+    <ion-card-header>
+      <ion-card-title>Tiendas Registradas</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <!-- Encabezados -->
+        <ion-row>
+          <ion-col size="2"><strong>ID</strong></ion-col>
+          <ion-col size="3"><strong>Nombre</strong></ion-col>
+          <ion-col size="3"><strong>Dirección</strong></ion-col>
+          <ion-col size="2"><strong>Ciudad</strong></ion-col>
+          <ion-col size="2"><strong>Acciones</strong></ion-col>
+        </ion-row>
+        <!-- Fila de datos -->
+        <ion-row *ngFor="let tienda of tiendas">
+          <ion-col size="2">{{ tienda.id_tienda }}</ion-col>
+          <ion-col size="3">{{ tienda.nombre_tienda }}</ion-col>
+          <ion-col size="3">{{ tienda.direccion }}</ion-col>
+          <ion-col size="2">{{ tienda.ciudad }}</ion-col>
+          <ion-col size="2">
+            <ion-button (click)="tienda.id_tienda ? editarTienda(tienda.id_tienda) : null" fill="outline">
+              Modificar
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
 
-  <ng-template #noTiendas>
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>No hay tiendas disponibles</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        Actualmente no se han encontrado tiendas para mostrar.
-      </ion-card-content>
-    </ion-card>
-  </ng-template>
+  <!-- Mostrar mensaje si no hay tiendas -->
+  <ion-card *ngIf="tiendas.length === 0">
+    <ion-card-header>
+      <ion-card-title>No hay tiendas disponibles</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Actualmente no se han encontrado tiendas para mostrar.
+    </ion-card-content>
+  </ion-card>
 </ion-content>

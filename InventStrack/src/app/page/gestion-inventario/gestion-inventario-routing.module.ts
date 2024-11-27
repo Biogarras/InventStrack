@@ -12,7 +12,11 @@ const routes: Routes = [
   {
     path: '',
     component: GestionInventarioPage
+  },  {
+    path: 'ver-inventario',
+    loadChildren: () => import('./ver-inventario/ver-inventario.module').then( m => m.VerInventarioPageModule)
   }
+
 
 ];
 

@@ -4,6 +4,7 @@ import { Producto } from 'src/app/models/Producto/producto';
 import { map, Observable } from 'rxjs';
 import { HttpParams, HttpResponse } from '@angular/common/http';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -35,6 +36,10 @@ export class ProductosService {
       );
     }
 
+    //getProductByBarcode(barcode: string): Observable<Producto> {
+    //  const endpoint = `${this.path}/by-barcode/${barcode}`; // Ruta del endpoint
+     // return this.apiConfig.get<Producto>(endpoint);
+    //}
 
 
 

@@ -30,6 +30,9 @@ export class InicioPage {
   realizarInventario() {
     this.navCtrl.navigateRoot(['realizar-inventario']); // Cambia la ruta según tu página de gestión de productos
   }
+  inventariosPendientes(){
+    this.navCtrl.navigateRoot(['inventarios-pendientes'])
+  }
 
 
   // Método para cerrar sesión

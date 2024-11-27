@@ -1,0 +1,54 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Inventarios Pendientes</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goBack()">Volver</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Mostrar inventarios pendientes si existen -->
+  <ion-card *ngIf="inventariosPendientes.length > 0">
+    <ion-card-header>
+      <ion-card-title>Lista de Inventarios Pendientes</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <!-- Encabezados -->
+        <ion-row>
+          <ion-col size="2"><strong>ID</strong></ion-col>
+          <ion-col size="3"><strong>Tienda</strong></ion-col>
+          <ion-col size="3"><strong>Fecha de Creación</strong></ion-col>
+          <ion-col size="3"><strong>Encargado</strong></ion-col>
+          <ion-col size="1"><strong>Acción</strong></ion-col>
+        </ion-row>
+        <!-- Fila de datos -->
+        <ion-row *ngFor="let inventario of inventariosPendientes">
+          <ion-col size="2">{{ inventario.id_inventario }}</ion-col>
+          <ion-col size="3">{{ inventario.nombre_tienda }}</ion-col>
+          <ion-col size="3">{{ inventario.fecha_creacion | date: 'shortDate' }}</ion-col>
+          <ion-col size="3">{{ inventario.nombre_encargado }}</ion-col>
+          <ion-col size="1">
+            <ion-button 
+              fill="outline" 
+              color="primary" 
+              (click)="realizarInventario(inventario.id_inventario)">
+              Realizar
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Mostrar mensaje si no hay inventarios pendientes -->
+  <ion-card *ngIf="inventariosPendientes.length === 0">
+    <ion-card-header>
+      <ion-card-title>No hay Inventarios Pendientes</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Actualmente no hay inventarios pendientes asignados a tu usuario.
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -1,7 +1,7 @@
-import { Role } from "./role";
+import { Role } from "../role";
 
 export interface Usuario {
-    id: number;
+    usuario_id: number;
     nombre: string;
     nombreUsuario: string;
     email: string;
@@ -9,5 +9,5 @@ export interface Usuario {
     role: string;
     created_at: string;
     deleted_at: string | null;
-    rol_id: number;
+    role_id: number;
   }
