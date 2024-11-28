@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiconfigService } from '../apiconfig/apiconfig.service';
 import { Producto } from 'src/app/models/Producto/producto';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { HttpParams, HttpResponse } from '@angular/common/http';
 
 
@@ -32,6 +32,18 @@ export class ProductosService {
             status: response.status,
             statusText: response.statusText
           });
+        })
+      );
+      
+    }
+    buscarProductoPorCodigoBarra(codbarra: any): Observable<HttpResponse<any>> {
+      const params = new HttpParams()
+        .set('sku', codbarra.toString());
+      return this.apiConfig.get<any>('productos', params).pipe(
+        map(response => response),
+        catchError(error => {
+          console.error('Error al buscar producto:', error);
+          return throwError(() => new Error('Producto no encontrado.'));
         })
       );
     }

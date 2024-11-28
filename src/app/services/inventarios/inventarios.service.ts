@@ -72,8 +72,7 @@ export class InventariosService {
   obtenerInventariosPendientesPorIdEncargado(idEncargado: number): Observable<HttpResponse<any[]>> {
     const params = new HttpParams()
     .set('id_encargado', `eq.${idEncargado}`)
-    .set('select', 'id_inventario,id_tienda,tiendas(nombre_tienda),Usuario(nombre),fecha_creacion');
-    
+    .set('select', 'id_inventario,id_tienda,tiendas(nombre_tienda),Usuario(nombre),fecha_creacion');  
     return this.apiConfig.get<any[]>(this.path, params).pipe(
       map((response) => {
         console.log('dasdasdasdaddas',response)
@@ -88,11 +87,11 @@ export class InventariosService {
       catchError((error) =>{
           console.error('Error al obtener inventarios pendientes:',error);
           return throwError(() => new Error('Error al cargar inventarios pendientes.'))
-
-
       })
     );
   }
+
+
 
   actualizarEstadoInventario(idInventario: number, estado: string): Observable<HttpResponse<any>> {
     return this.apiConfig.patch<any>(`${this.path}/${idInventario}`, { estado }).pipe(

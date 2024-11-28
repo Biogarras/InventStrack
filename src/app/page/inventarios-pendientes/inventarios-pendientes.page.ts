@@ -41,8 +41,9 @@ export class InventariosPendientesPage implements OnInit {
   }
 
   realizarInventario(idInventario: number) {
-      this.navCtrl.navigateRoot(['realizar-inventario']),
-    { queryParams: { idInventario } };
+      this.navCtrl.navigateRoot(['realizar-inventario'], {
+      queryParams: { idInventario }
+    });
   }
 
   goBack() {

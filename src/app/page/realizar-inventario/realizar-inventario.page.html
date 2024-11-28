@@ -5,5 +5,86 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  
+  <ion-grid>
+    <!-- Escaneo del código de barras -->
+    <ion-row>
+      <ion-col>
+        <ion-button expand="block"  (click)="startScan()">
+          Escanear Código de Barras
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <!-- Resultado del escaneo -->
+    <ion-row *ngIf="scannedResult">
+      <ion-col>
+        <ion-item>
+          <ion-label position="stacked">Código Escaneado</ion-label>
+          <ion-input [value]="scannedResult" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <!-- Información del producto -->
+    <ion-row *ngIf="product">
+      <ion-col>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Información del Producto</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p><strong>SKU:</strong> {{ product.sku }}</p>
+            <p><strong>Nombre:</strong> {{ product.nombre }}</p>
+            <p><strong>Precio Venta:</strong> {{ product.precio_venta | currency }}</p>
+            <p><strong>Costo:</strong> {{ product.costo | currency }}</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- Cantidad ingresada -->
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="stacked">Cantidad Contada</ion-label>
+          <ion-input 
+            type="number" 
+            [(ngModel)]="quantity" 
+            placeholder="Ingrese cantidad"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <!-- Botón para agregar el detalle al inventario -->
+    <ion-row>
+      <ion-col>
+        <ion-button expand="block"  (click)="addInventoryDetail()">
+          Agregar al Inventario
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <!-- Detalles agregados -->
+    <ion-row *ngIf="inventoryDetails.length > 0">
+      <ion-col>
+        <ion-list>
+          <ion-list-header>
+            <ion-label>Detalles del Inventario</ion-label>
+          </ion-list-header>
+          <ion-item *ngFor="let detail of inventoryDetails">
+            <ion-label>
+              <p><strong>SKU:</strong> {{ detail.sku }}</p>
+              <p><strong>Cantidad Contada:</strong> {{ detail.cantidad_contada }}</p>
+              <p><strong>Stock Inicial:</strong> {{ detail.stock_inicial }}</p>
+              <p><strong>Precio Venta:</strong> {{ detail.precio_venta | currency }}</p>
+              <p><strong>Costo:</strong> {{ detail.costo | currency }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Indicador de carga -->
+  <ion-loading [isOpen]="loading" message="Buscando producto..."></ion-loading>
 </ion-content>
