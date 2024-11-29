@@ -18,6 +18,7 @@ export class AutentificacionService {
         if (usuario && usuario.password === password) { // Asegúrate de ajustar esto si usas encriptación
           localStorage.setItem('authToken', 'some-token');
           localStorage.setItem('currentUserId',String(usuario.usuario_id));
+          localStorage.setItem('currentUserRoleId', String(usuario.role_id));
           return true;
         } else {
           return false;
@@ -39,7 +40,18 @@ export class AutentificacionService {
     // Eliminar cualquier información de autenticación
     localStorage.removeItem('authToken');
     localStorage.removeItem('currentUserId'); // Elimina el token o la información del usuario
+    localStorage.removeItem('currentUserRoleId');
     console.log('Sesión cerrada correctamente');
+  }
+
+  getCurrentUser() {
+    const userId = localStorage.getItem('currentUserId');
+    const roleId = localStorage.getItem('currentUserRoleId');
+    
+    if (userId && roleId) {
+      return { usuario_id: userId, role_id: Number(roleId) }; // Devolver role_id como número
+    }
+    return null; // Si no hay usuario logueado
   }
 
 }
