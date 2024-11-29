@@ -15,6 +15,7 @@ export class CrearinventarioPage implements OnInit {
   tiendas:any[] = [];
   tiendaSeleccionada: { [key: number]: boolean } = {}; 
   idEncargado = 1;
+  id_tienda=0
 
   nuevoInventario: CrearInventario = {
     id_tienda:0,
@@ -37,7 +38,7 @@ export class CrearinventarioPage implements OnInit {
     this.tiendasService.obtenerTiendas2().subscribe({
       next: (response) => {
         console.log('Aers', response)
-        this.tiendas = response.body || [];      
+        this.tiendas = response.body || [];  
       },
       error: (error) => {
         console.error('Error al cargar tiendas:', error);
