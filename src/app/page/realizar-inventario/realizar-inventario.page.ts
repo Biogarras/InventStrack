@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InventariosService } from 'src/app/services/inventarios/inventarios.service';
 import { ProductosService } from 'src/app/services/productos/productos.service';
-import { CapacitorBarcodeScanner, CapacitorBarcodeScannerTypeHint } from '@capacitor/barcode-scanner';
+/*import { CapacitorBarcodeScanner, CapacitorBarcodeScannerTypeHint } from '@capacitor/barcode-scanner';*/
 import { StockTiendaService } from 'src/app/services/stock_tienda/stock-tienda.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -40,7 +40,7 @@ export class RealizarInventarioPage implements OnInit {
     console.log('ID del Inventario:', this.inventoryId); // Muestra la ID del inventario en la consola
   }
 
-  async startScan() {
+  /*async startScan() {
     try {
       const scanResult = await CapacitorBarcodeScanner.scanBarcode({
         hint: CapacitorBarcodeScannerTypeHint.ALL,
@@ -121,4 +121,5 @@ export class RealizarInventarioPage implements OnInit {
     this.quantity = null; // Reinicia la cantidad ingresada
     this.scannedResult = null; // Limpia el código escaneado
   }
+    */
 }
