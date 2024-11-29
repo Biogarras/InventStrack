@@ -28,9 +28,9 @@
           <ion-col size="2">{{ inventario.id_encargado }}</ion-col>
           <ion-col size="2">{{ inventario.fecha_creacion | date: 'short' }}</ion-col>
           <ion-col size="2">{{ inventario.fecha_realizacion ? (inventario.fecha_realizacion | date: 'short') : 'No realizada' }}</ion-col>
-          <ion-col size="2">
+          <ion-col size="2">{{ inventario.estado}}</ion-col>
          
-          </ion-col>
+          
         </ion-row>
       </ion-grid>
     </ion-card-content>
