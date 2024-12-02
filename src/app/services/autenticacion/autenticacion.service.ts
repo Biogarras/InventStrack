@@ -53,5 +53,10 @@ export class AutentificacionService {
     }
     return null; // Si no hay usuario logueado
   }
+  getCurrentUserRole(): number | null {
+    const currentUser = this.getCurrentUser();
+    return currentUser ? currentUser.role_id : null; // Devuelve el role_id o null si no hay usuario
+  }
+  
 
 }
