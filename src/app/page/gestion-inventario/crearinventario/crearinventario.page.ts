@@ -80,6 +80,10 @@ export class CrearinventarioPage implements OnInit {
     this.navCtrl.navigateRoot(['gestion-inventario']); // Ajusta la ruta según tu configuración
   }
 
+  onTiendaSeleccionada(tiendaId: number, isChecked: boolean) {
+    this.tiendaSeleccionada[tiendaId] = isChecked;
+  }
+
   
 
 }

@@ -67,7 +67,7 @@ const routes: Routes = [
     path: 'inventarios-pendientes',
     loadChildren: () => import('./page/inventarios-pendientes/inventarios-pendientes.module').then( m => m.InventariosPendientesPageModule),
     canActivate: [roleGuard],
-    data:{allowedRoles: [1,2]},//usuarios que pueden acceder
+    data:{allowedRoles: [1,3]},//usuarios que pueden acceder
   },
   
  

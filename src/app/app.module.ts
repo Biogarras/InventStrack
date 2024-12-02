@@ -8,11 +8,10 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { FormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HasRoleDirective } from './Directive/has-role.directive';
 
 
 @NgModule({
-  declarations: [AppComponent,HasRoleDirective],
+  declarations: [AppComponent],
   imports: [BrowserModule,
             IonicModule.forRoot(),
             AppRoutingModule,

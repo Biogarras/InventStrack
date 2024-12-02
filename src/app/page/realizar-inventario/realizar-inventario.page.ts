@@ -4,6 +4,7 @@ import { ProductosService } from 'src/app/services/productos/productos.service';
 /*import { CapacitorBarcodeScanner, CapacitorBarcodeScannerTypeHint } from '@capacitor/barcode-scanner';*/
 import { StockTiendaService } from 'src/app/services/stock_tienda/stock-tienda.service';
 import { ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-realizar-inventario',
@@ -23,7 +24,8 @@ export class RealizarInventarioPage implements OnInit {
     private inventariosService: InventariosService,
     private productosService: ProductosService,
     private stock_TiendaService: StockTiendaService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private navCtrl : NavController
   ) {}
 
   ngOnInit() {
@@ -39,31 +41,6 @@ export class RealizarInventarioPage implements OnInit {
     this.inventoryId = id;
     console.log('ID del Inventario:', this.inventoryId); // Muestra la ID del inventario en la consola
   }
-
-  /*async startScan() {
-    try {
-      const scanResult = await CapacitorBarcodeScanner.scanBarcode({
-        hint: CapacitorBarcodeScannerTypeHint.ALL,
-      });
-  
-      // Usa 'value' en lugar de 'content'
-      if (scanResult.ScanResult) {
-        this.scannedResult = scanResult.ScanResult;
-        console.log('Código escaneado:', this.scannedResult);
-  
-        // Busca el producto relacionado con el código escaneado
-        this.product = await this.productosService
-          .buscarProductoPorCodigoBarra(this.scannedResult)
-          .toPromise();
-        console.log('Producto encontrado:', this.product);
-      } else {
-        console.log('Escaneo cancelado o sin contenido válido.');
-      }
-    } catch (error) {
-      console.error('Error al escanear código de barras', error);
-    }
-  }
-  
 
   searchProduct(EAN_13: string | number) {
     this.loading = true;
@@ -81,17 +58,12 @@ export class RealizarInventarioPage implements OnInit {
   }
 
   addInventoryDetail() {
-    if (this.product && this.quantity != null) {
+    if (this.product && this.quantity != null && this.inventoryId) {
       this.stock_TiendaService.obtenerStockPorTienda(this.storeId).subscribe(
         (response) => {
-          // Busca el stock específico del producto en la respuesta
           const stockTienda = response.body?.find((item: any) => item.sku === this.product.sku);
-          const stockInicial = stockTienda ? stockTienda.stock : 0; // Usa 0 si no se encuentra
-
-          if (stockTienda == null) {
-            console.warn(`No se encontró stock inicial para el producto con SKU: ${this.product.sku}`);
-          }
-
+          const stockInicial = stockTienda ? stockTienda.stock : 0;
+  
           const detail = {
             id_inventario: this.inventoryId,
             sku: this.product.sku,
@@ -100,8 +72,7 @@ export class RealizarInventarioPage implements OnInit {
             precio_venta: this.product.precio_venta,
             costo: this.product.costo,
           };
-
-          // Agregar el detalle al inventario
+  
           this.inventoryDetails.push(detail);
           console.log('Detalle de inventario agregado:', detail);
           this.resetForm();
@@ -121,5 +92,32 @@ export class RealizarInventarioPage implements OnInit {
     this.quantity = null; // Reinicia la cantidad ingresada
     this.scannedResult = null; // Limpia el código escaneado
   }
-    */
+
+  removeDetail(detail: any) {
+    this.inventoryDetails = this.inventoryDetails.filter((item) => item !== detail);
+  }
+
+  finalizeInventory() {
+    if (this.inventoryDetails.length > 0) {
+      this.inventoryDetails.forEach((detail) => {
+        this.inventariosService.guardarDetalleInventario(detail).subscribe(
+          (response) => {
+            console.log('Detalle guardado exitosamente:', response);
+          },
+          (error) => {
+            console.error('Error al guardar el detalle del inventario:', error);
+          }
+        );
+      });
+      alert('Inventario finalizado exitosamente.');
+      this.inventoryDetails = [];
+    } else {
+      alert('No hay detalles para finalizar el inventario.');
+    }
+  }
+
+  goBack() {
+    this.navCtrl.navigateRoot(['gestion-producto']);  // Ajusta la ruta según la página que quieras
+  }
+  
 }
