@@ -14,7 +14,7 @@ import { NavController } from '@ionic/angular';
 export class RealizarInventarioPage implements OnInit {
   scannedResult: string | null = null;
   product: any = null;
-  quantity: number | null = null;
+  cantidad: number | null = null;
   inventoryDetails: any[] = [];
   loading = false;
   storeId: number = 1;
@@ -42,23 +42,40 @@ export class RealizarInventarioPage implements OnInit {
     console.log('ID del Inventario:', this.inventoryId); // Muestra la ID del inventario en la consola
   }
 
-  searchProduct(EAN_13: string | number) {
+  buscarproducto(EAN_13: any) {
+    if (!EAN_13) {
+      alert('Por favor, ingresa un código de barras.');
+      return;
+    }
     this.loading = true;
+  
     this.productosService.buscarProductoPorCodigoBarra(EAN_13).subscribe(
       (response) => {
-        this.product = response.body;
+        console.log('Respuesta del servicio:', response); // Para depuración
+  
+        // Aquí asumimos que response es directamente el array de productos
+        const productos = response; 
+  
+        if (Array.isArray(productos) && productos.length > 0) {
+          this.product = productos[0]; // Toma el primer producto del array
+          console.log('Producto encontrado:', this.product);
+        } else {
+          alert('Producto no encontrado.');
+          this.product = null; // Limpia el producto si no se encuentra
+        }
         this.loading = false;
       },
       (error) => {
         console.error('Error al buscar producto:', error);
-        alert('Producto no encontrado.');
+        alert('Error al buscar el producto.');
         this.loading = false;
+        this.product = null; // Asegúrate de limpiar el estado del producto en caso de error
       }
     );
   }
 
   addInventoryDetail() {
-    if (this.product && this.quantity != null && this.inventoryId) {
+    if (this.product && this.cantidad != null && this.inventoryId) {
       this.stock_TiendaService.obtenerStockPorTienda(this.storeId).subscribe(
         (response) => {
           const stockTienda = response.body?.find((item: any) => item.sku === this.product.sku);
@@ -67,7 +84,7 @@ export class RealizarInventarioPage implements OnInit {
           const detail = {
             id_inventario: this.inventoryId,
             sku: this.product.sku,
-            cantidad_contada: this.quantity,
+            cantidad_contada: this.cantidad,
             stock_inicial: stockInicial,
             precio_venta: this.product.precio_venta,
             costo: this.product.costo,
@@ -89,7 +106,7 @@ export class RealizarInventarioPage implements OnInit {
 
   resetForm() {
     this.product = null; // Limpia el producto seleccionado
-    this.quantity = null; // Reinicia la cantidad ingresada
+    this.cantidad = null; // Reinicia la cantidad ingresada
     this.scannedResult = null; // Limpia el código escaneado
   }
 
@@ -117,7 +134,7 @@ export class RealizarInventarioPage implements OnInit {
   }
 
   goBack() {
-    this.navCtrl.navigateRoot(['gestion-producto']);  // Ajusta la ruta según la página que quieras
+    this.navCtrl.navigateRoot(['inicio']);  // Ajusta la ruta según la página que quieras
   }
   
 }

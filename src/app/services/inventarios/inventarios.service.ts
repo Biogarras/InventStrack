@@ -75,7 +75,6 @@ export class InventariosService {
     .set('select', 'id_inventario,id_tienda,tiendas(nombre_tienda),Usuario(nombre),fecha_creacion');  
     return this.apiConfig.get<any[]>(this.path, params).pipe(
       map((response) => {
-        console.log('dasdasdasdaddas',response)
         return new HttpResponse({
           body: response.body, // Devuelve los inventarios pendientes
           headers: response.headers,

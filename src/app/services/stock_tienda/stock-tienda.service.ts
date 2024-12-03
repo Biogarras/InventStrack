@@ -14,7 +14,7 @@ export class StockTiendaService {
 
   obtenerStockPorTienda(idTienda:number):Observable<HttpResponse<any>>{
     const params = new HttpParams()
-      .set('id_tienda',idTienda.toString());
+      .set('id_tienda',`eq.${idTienda}`);
       return this.apiConfig.get<any>(this.path,params).pipe(
         map((response) =>{
           console.log('A ver el stock de tiendas o.o',response)
