@@ -4,11 +4,14 @@ import { catchError, map, Observable, throwError } from 'rxjs';
 import { HttpParams, HttpResponse } from '@angular/common/http';
 import { CrearInventario } from 'src/app/models/Inventario/crearinventario';
 import { Inventario } from 'src/app/models/Inventario/inventario';
+import { guardarDetalleInv } from 'src/app/models/Inventario/guardarDetalleInv';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InventariosService {
+  
+  
 
   path = 'inventarios';
 
@@ -36,6 +39,7 @@ export class InventariosService {
       })
     );
   }
+
   obtenerInventarios(): Observable<HttpResponse<any[]>> {
     const params = new HttpParams().set('select', '*');
     return this.apiConfig.get<any[]>(this.path, params).pipe(
@@ -75,7 +79,6 @@ export class InventariosService {
     .set('select', 'id_inventario,id_tienda,tiendas(nombre_tienda),Usuario(nombre),fecha_creacion');  
     return this.apiConfig.get<any[]>(this.path, params).pipe(
       map((response) => {
-        console.log('dasdasdasdaddas',response)
         return new HttpResponse({
           body: response.body, // Devuelve los inventarios pendientes
           headers: response.headers,
@@ -91,8 +94,6 @@ export class InventariosService {
     );
   }
 
-
-
   actualizarEstadoInventario(idInventario: number, estado: string): Observable<HttpResponse<any>> {
     return this.apiConfig.patch<any>(`${this.path}/${idInventario}`, { estado }).pipe(
       map(response => response),
@@ -103,15 +104,32 @@ export class InventariosService {
     );
   }
 
-  guardarDetalleInventario(detalle: any): Observable<HttpResponse<any>> {
-    return this.apiConfig.post<any>('detalle_inventario', detalle).pipe(
-      map(response => response),
+  guardarDetallesInventario(detalles: guardarDetalleInv[]): Observable<HttpResponse<any>> {
+    const path = 'detalle_inventario'; // Asegúrate de que esta ruta sea correcta en tu backend
+    
+    // Log para verificar los datos enviados
+    console.log('Detalles enviados al backend:', detalles);
+  
+    return this.apiConfig.post<any>(path, detalles).pipe(
+      map(response => {
+        // Log para inspeccionar la respuesta del backend
+        console.log('Respuesta recibida del backend:', response);
+  
+        return new HttpResponse({
+          body: response.body,
+          headers: response.headers,
+          status: response.status,
+          statusText: response.statusText,
+        });
+      }),
       catchError(error => {
-        console.error('Error al guardar detalle:', error);
-        return throwError(() => new Error('Error al guardar detalle de inventario.'));
+        // Log para capturar errores que ocurran en el flujo
+        console.error('Error al guardar detalles:', error);
+        return throwError(() => new Error('Error al guardar detalles de inventario.'));
       })
     );
   }
+
 }
 
 

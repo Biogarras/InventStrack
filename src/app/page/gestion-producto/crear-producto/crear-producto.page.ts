@@ -43,6 +43,8 @@ export class CrearProductoPage implements OnInit {
   goBack() {
     this.navCtrl.navigateRoot(['gestion-producto']);  // Ajusta la ruta según la página que quieras
   }
+
+  
   
 
 }
