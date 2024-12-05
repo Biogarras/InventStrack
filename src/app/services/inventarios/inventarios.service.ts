@@ -76,6 +76,7 @@ export class InventariosService {
   obtenerInventariosPendientesPorIdEncargado(idEncargado: number): Observable<HttpResponse<any[]>> {
     const params = new HttpParams()
     .set('id_encargado', `eq.${idEncargado}`)
+    .set('estado', `eq.Pendiente por realizar`)
     .set('select', 'id_inventario,id_tienda,tiendas(nombre_tienda),Usuario(nombre),fecha_creacion');  
     return this.apiConfig.get<any[]>(this.path, params).pipe(
       map((response) => {
@@ -95,7 +96,11 @@ export class InventariosService {
   }
 
   actualizarEstadoInventario(idInventario: number, estado: string): Observable<HttpResponse<any>> {
-    return this.apiConfig.patch<any>(`${this.path}/${idInventario}`, { estado }).pipe(
+    const params = new HttpParams().
+    set('id_inventario', `eq.${idInventario}`); // Filtro para seleccionar el inventario con el id especificado
+    const data = { estado }; // Los datos que se van a actualizar
+  
+    return this.apiConfig.patch<any>(`${this.path}`, data, params).pipe(
       map(response => response),
       catchError(error => {
         console.error('Error al actualizar estado:', error);

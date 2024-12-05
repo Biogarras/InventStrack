@@ -121,8 +121,22 @@ export class RealizarInventarioPage implements OnInit {
       this.inventariosService.guardarDetallesInventario(this.inventoryDetails).subscribe(
         (response) => {
           console.log('Detalles guardados exitosamente:', response);
-          alert('Inventario finalizado exitosamente.');
-          this.inventoryDetails = []; // Limpia los detalles del inventario después de finalizar
+          const idInventario = Number(this.inventoryId);
+          const estado = 'Finalizado'
+          
+          this.inventariosService.actualizarEstadoInventario(idInventario,estado ).subscribe(
+            (updateResponse) => {
+              console.log('Estado del inventario actualizado exitosamente:', updateResponse);
+              alert('Inventario finalizado exitosamente.');
+              this.inventoryDetails = [];
+            },
+            (updateError)=>{
+              console.error('Error al actualizar el estado del inventario:', updateError)
+              alert('Detalles guardados, pero ocurrio un error al actualizar el estado del inventario')
+            }
+          );  
+          
+          
         },
         (error) => {
           console.error('Error al guardar los detalles del inventario:', error);
