@@ -5,6 +5,7 @@ import { ProductosService } from 'src/app/services/productos/productos.service';
 import { StockTiendaService } from 'src/app/services/stock_tienda/stock-tienda.service';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
+import { guardarDetalleInv } from 'src/app/models/Inventario/guardarDetalleInv';
 
 @Component({
   selector: 'app-realizar-inventario',
@@ -12,12 +13,12 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./realizar-inventario.page.scss'],
 })
 export class RealizarInventarioPage implements OnInit {
-  scannedResult: string | null = null;
+  scannedResult: any = null;
   product: any = null;
   cantidad: number | null = null;
-  inventoryDetails: any[] = [];
+  inventoryDetails: guardarDetalleInv[] = [];
   loading = false;
-  storeId: number = 1;
+  storeId: number = 19;
   inventoryId: number | null = null;
 
   constructor(
@@ -76,22 +77,22 @@ export class RealizarInventarioPage implements OnInit {
 
   addInventoryDetail() {
     if (this.product && this.cantidad != null && this.inventoryId) {
-      this.stock_TiendaService.obtenerStockPorTienda(this.storeId).subscribe(
+      this.stock_TiendaService.obtenerStockPorCodigoDeBarraYTienda(this.product.sku, this.storeId).subscribe(
         (response) => {
-          const stockTienda = response.body?.find((item: any) => item.sku === this.product.sku);
-          const stockInicial = stockTienda ? stockTienda.stock : 0;
+          const stockProducto = response.body?.[0]; 
+          const stockInicial = stockProducto ? stockProducto.cantidad_disponible : 0;
   
           const detail = {
-            id_inventario: this.inventoryId,
+            id_inventario: Number(this.inventoryId),
             sku: this.product.sku,
             cantidad_contada: this.cantidad,
             stock_inicial: stockInicial,
             precio_venta: this.product.precio_venta,
             costo: this.product.costo,
           };
-  
+
           this.inventoryDetails.push(detail);
-          console.log('Detalle de inventario agregado:', detail);
+          console.log('Detalle de inventario agregado:', this.inventoryDetails);
           this.resetForm();
         },
         (error) => {
@@ -116,22 +117,23 @@ export class RealizarInventarioPage implements OnInit {
 
   finalizeInventory() {
     if (this.inventoryDetails.length > 0) {
-      this.inventoryDetails.forEach((detail) => {
-        this.inventariosService.guardarDetalleInventario(detail).subscribe(
-          (response) => {
-            console.log('Detalle guardado exitosamente:', response);
-          },
-          (error) => {
-            console.error('Error al guardar el detalle del inventario:', error);
-          }
-        );
-      });
-      alert('Inventario finalizado exitosamente.');
-      this.inventoryDetails = [];
+      // Llamar al nuevo método que acepta un arreglo completo
+      this.inventariosService.guardarDetallesInventario(this.inventoryDetails).subscribe(
+        (response) => {
+          console.log('Detalles guardados exitosamente:', response);
+          alert('Inventario finalizado exitosamente.');
+          this.inventoryDetails = []; // Limpia los detalles del inventario después de finalizar
+        },
+        (error) => {
+          console.error('Error al guardar los detalles del inventario:', error);
+          alert('Ocurrió un error al finalizar el inventario.');
+        }
+      );
     } else {
       alert('No hay detalles para finalizar el inventario.');
     }
   }
+  
 
   goBack() {
     this.navCtrl.navigateRoot(['inicio']);  // Ajusta la ruta según la página que quieras
