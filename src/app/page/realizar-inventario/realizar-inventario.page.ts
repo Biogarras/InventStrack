@@ -6,6 +6,7 @@ import { StockTiendaService } from 'src/app/services/stock_tienda/stock-tienda.s
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { guardarDetalleInv } from 'src/app/models/Inventario/guardarDetalleInv';
+import { BarcodeScanner, BarcodeFormat } from '@capacitor-mlkit/barcode-scanning';
 
 @Component({
   selector: 'app-realizar-inventario',
@@ -36,6 +37,37 @@ export class RealizarInventarioPage implements OnInit {
         this.setInventoryId(selectedInventoryId);
       }
     });
+  }
+  async startScan() {
+    // Ocultar elementos de la vista mientras se escanea
+    document.querySelector('body')?.classList.add('barcode-scanner-active');
+  
+    const listener = await BarcodeScanner.addListener('barcodeScanned', async result => {
+      console.log('Código escaneado:', result.barcode);
+  
+      // Busca el producto en base al código escaneado
+      this.buscarproducto(result.barcode);
+  
+      // Detener el escaneo
+      await BarcodeScanner.stopScan();
+      document.querySelector('body')?.classList.remove('barcode-scanner-active');
+      await listener.remove();
+    });
+  
+    // Inicia el escáner
+    await BarcodeScanner.startScan();
+  }
+  
+  async stopScan() {
+    await BarcodeScanner.stopScan();
+    document.querySelector('body')?.classList.remove('barcode-scanner-active');
+  }
+  
+  async checkCameraPermissions() {
+    const permissions = await BarcodeScanner.checkPermissions();
+    if (!permissions.camera) {
+      await BarcodeScanner.requestPermissions();
+    }
   }
 
   setInventoryId(id: number) {
