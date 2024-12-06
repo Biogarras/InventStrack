@@ -44,6 +44,7 @@ export class RealizarInventarioPage implements OnInit {
       try {
         console.log('Intentando escanear...');
         await this.checkCameraPermissions();
+        console.log('Intentando escanear...');
     
         document.querySelector('body')?.classList.add('barcode-scanner-active');
         const { barcodes } = await BarcodeScanner.scan({
