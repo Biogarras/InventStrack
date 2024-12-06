@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { guardarDetalleInv } from 'src/app/models/Inventario/guardarDetalleInv';
 import { BarcodeScanner, BarcodeFormat } from '@capacitor-mlkit/barcode-scanning';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-realizar-inventario',
@@ -39,41 +40,46 @@ export class RealizarInventarioPage implements OnInit {
   }
 
   async startScan() {
-    try {
-      // Verificar y solicitar permisos de cámara
-      await this.checkCameraPermissions();
-
-      // Agregar la clase para el escaneo
-      document.querySelector('body')?.classList.add('barcode-scanner-active');
-
-      // Iniciar escaneo
-      const { barcodes } = await BarcodeScanner.scan({
-        formats: [BarcodeFormat.QrCode], // Cambiar formato si necesitas otro
-      });
-
-      if (barcodes.length > 0) {
-        this.scannedResult = barcodes[0]?.displayValue || null;
-        if (this.scannedResult) {
-          this.buscarproducto(this.scannedResult);
+    if (Capacitor.isNative) {
+      try {
+        console.log('Intentando escanear...');
+        await this.checkCameraPermissions();
+    
+        document.querySelector('body')?.classList.add('barcode-scanner-active');
+        const { barcodes } = await BarcodeScanner.scan({
+          formats: [BarcodeFormat.QrCode],
+        });
+    
+        console.log('Códigos escaneados:', barcodes);
+        if (barcodes.length > 0) {
+          this.scannedResult = barcodes[0]?.displayValue || null;
+          if (this.scannedResult) {
+            this.buscarproducto(this.scannedResult);
+          }
+        } else {
+          alert('No se encontró ningún código.');
         }
-      } else {
-        alert('No se encontró ningún código.');
+      } catch (error) {
+        console.error('Error al escanear:', error);
+        alert('Ocurrió un error al escanear el código.');
+      } finally {
+        document.querySelector('body')?.classList.remove('barcode-scanner-active');
+        await BarcodeScanner.stopScan();
       }
-    } catch (error) {
-      console.error('Error al escanear:', error);
-      alert('Ocurrió un error al escanear el código.');
-    } finally {
-      // Limpieza
-      document.querySelector('body')?.classList.remove('barcode-scanner-active');
-      await BarcodeScanner.stopScan();
+    } else {
+      alert('Escaneo de códigos solo está disponible en dispositivos móviles.');
     }
   }
+  
+
 
   async checkCameraPermissions() {
     const { camera } = await BarcodeScanner.checkPermissions();
-
+    console.log('Permisos de cámara:', camera); // Verificar permisos
+  
     if (camera !== 'granted') {
       const { camera: requestedCamera } = await BarcodeScanner.requestPermissions();
+      console.log('Permisos solicitados:', requestedCamera); // Verificar si el permiso fue otorgado
       if (requestedCamera !== 'granted') {
         throw new Error('Permisos de cámara no concedidos.');
       }
