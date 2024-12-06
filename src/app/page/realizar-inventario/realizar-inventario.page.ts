@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { InventariosService } from 'src/app/services/inventarios/inventarios.service';
 import { ProductosService } from 'src/app/services/productos/productos.service';
-/*import { CapacitorBarcodeScanner, CapacitorBarcodeScannerTypeHint } from '@capacitor/barcode-scanner';*/
 import { StockTiendaService } from 'src/app/services/stock_tienda/stock-tienda.service';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
@@ -14,7 +13,7 @@ import { BarcodeScanner, BarcodeFormat } from '@capacitor-mlkit/barcode-scanning
   styleUrls: ['./realizar-inventario.page.scss'],
 })
 export class RealizarInventarioPage implements OnInit {
-  scannedResult: any = null;
+  scannedResult: string | null = null;
   product: any = null;
   cantidad: number | null = null;
   inventoryDetails: guardarDetalleInv[] = [];
@@ -27,74 +26,79 @@ export class RealizarInventarioPage implements OnInit {
     private productosService: ProductosService,
     private stock_TiendaService: StockTiendaService,
     private activatedRoute: ActivatedRoute,
-    private navCtrl : NavController
+    private navCtrl: NavController
   ) {}
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe((params) => {
       const selectedInventoryId = params['idInventario'];
       if (selectedInventoryId) {
-        this.setInventoryId(selectedInventoryId);
+        this.setInventoryId(Number(selectedInventoryId));
       }
     });
   }
+
   async startScan() {
-    // Ocultar elementos de la vista mientras se escanea
-    document.querySelector('body')?.classList.add('barcode-scanner-active');
-  
-    const listener = await BarcodeScanner.addListener('barcodeScanned', async result => {
-      console.log('Código escaneado:', result.barcode);
-  
-      // Busca el producto en base al código escaneado
-      this.buscarproducto(result.barcode);
-  
-      // Detener el escaneo
-      await BarcodeScanner.stopScan();
+    try {
+      // Verificar y solicitar permisos de cámara
+      await this.checkCameraPermissions();
+
+      // Agregar la clase para el escaneo
+      document.querySelector('body')?.classList.add('barcode-scanner-active');
+
+      // Iniciar escaneo
+      const { barcodes } = await BarcodeScanner.scan({
+        formats: [BarcodeFormat.QrCode], // Cambiar formato si necesitas otro
+      });
+
+      if (barcodes.length > 0) {
+        this.scannedResult = barcodes[0]?.displayValue || null;
+        if (this.scannedResult) {
+          this.buscarproducto(this.scannedResult);
+        }
+      } else {
+        alert('No se encontró ningún código.');
+      }
+    } catch (error) {
+      console.error('Error al escanear:', error);
+      alert('Ocurrió un error al escanear el código.');
+    } finally {
+      // Limpieza
       document.querySelector('body')?.classList.remove('barcode-scanner-active');
-      await listener.remove();
-    });
-  
-    // Inicia el escáner
-    await BarcodeScanner.startScan();
+      await BarcodeScanner.stopScan();
+    }
   }
-  
-  async stopScan() {
-    await BarcodeScanner.stopScan();
-    document.querySelector('body')?.classList.remove('barcode-scanner-active');
-  }
-  
+
   async checkCameraPermissions() {
-    const permissions = await BarcodeScanner.checkPermissions();
-    if (!permissions.camera) {
-      await BarcodeScanner.requestPermissions();
+    const { camera } = await BarcodeScanner.checkPermissions();
+
+    if (camera !== 'granted') {
+      const { camera: requestedCamera } = await BarcodeScanner.requestPermissions();
+      if (requestedCamera !== 'granted') {
+        throw new Error('Permisos de cámara no concedidos.');
+      }
     }
   }
 
   setInventoryId(id: number) {
     this.inventoryId = id;
-    console.log('ID del Inventario:', this.inventoryId); // Muestra la ID del inventario en la consola
   }
 
-  buscarproducto(EAN_13: any) {
+  buscarproducto(EAN_13: string) {
     if (!EAN_13) {
-      alert('Por favor, ingresa un código de barras.');
+      alert('Por favor, escanee un código de barras válido.');
       return;
     }
     this.loading = true;
-  
+
     this.productosService.buscarProductoPorCodigoBarra(EAN_13).subscribe(
       (response) => {
-        console.log('Respuesta del servicio:', response); // Para depuración
-  
-        // Aquí asumimos que response es directamente el array de productos
-        const productos = response; 
-  
+        const productos = response;
         if (Array.isArray(productos) && productos.length > 0) {
-          this.product = productos[0]; // Toma el primer producto del array
-          console.log('Producto encontrado:', this.product);
+          this.product = productos[0];
         } else {
           alert('Producto no encontrado.');
-          this.product = null; // Limpia el producto si no se encuentra
+          this.product = null;
         }
         this.loading = false;
       },
@@ -102,73 +106,69 @@ export class RealizarInventarioPage implements OnInit {
         console.error('Error al buscar producto:', error);
         alert('Error al buscar el producto.');
         this.loading = false;
-        this.product = null; // Asegúrate de limpiar el estado del producto en caso de error
+        this.product = null;
       }
     );
   }
 
   addInventoryDetail() {
     if (this.product && this.cantidad != null && this.inventoryId) {
-      this.stock_TiendaService.obtenerStockPorCodigoDeBarraYTienda(this.product.sku, this.storeId).subscribe(
-        (response) => {
-          const stockProducto = response.body?.[0]; 
-          const stockInicial = stockProducto ? stockProducto.cantidad_disponible : 0;
-  
-          const detail = {
-            id_inventario: Number(this.inventoryId),
-            sku: this.product.sku,
-            cantidad_contada: this.cantidad,
-            stock_inicial: stockInicial,
-            precio_venta: this.product.precio_venta,
-            costo: this.product.costo,
-          };
+      this.stock_TiendaService
+        .obtenerStockPorCodigoDeBarraYTienda(this.product.sku, this.storeId)
+        .subscribe(
+          (response) => {
+            const stockProducto = response.body?.[0];
+            const stockInicial = stockProducto ? stockProducto.cantidad_disponible : 0;
 
-          this.inventoryDetails.push(detail);
-          console.log('Detalle de inventario agregado:', this.inventoryDetails);
-          this.resetForm();
-        },
-        (error) => {
-          console.error('Error al obtener el stock inicial:', error);
-          alert('No se pudo obtener el stock inicial del producto.');
-        }
-      );
+            const detail: guardarDetalleInv = {
+              id_inventario: Number(this.inventoryId),
+              sku: this.product.sku,
+              cantidad_contada: this.cantidad,
+              stock_inicial: stockInicial,
+              precio_venta: this.product.precio_venta,
+              costo: this.product.costo,
+            };
+
+            this.inventoryDetails.push(detail);
+            this.resetForm();
+          },
+          (error) => {
+            console.error('Error al obtener el stock inicial:', error);
+            alert('No se pudo obtener el stock inicial del producto.');
+          }
+        );
     } else {
       alert('Por favor, completa todos los campos.');
     }
   }
 
   resetForm() {
-    this.product = null; // Limpia el producto seleccionado
-    this.cantidad = null; // Reinicia la cantidad ingresada
-    this.scannedResult = null; // Limpia el código escaneado
+    this.product = null;
+    this.cantidad = null;
+    this.scannedResult = null;
   }
 
-  removeDetail(detail: any) {
+  removeDetail(detail: guardarDetalleInv) {
     this.inventoryDetails = this.inventoryDetails.filter((item) => item !== detail);
   }
 
   finalizeInventory() {
     if (this.inventoryDetails.length > 0) {
-      // Llamar al nuevo método que acepta un arreglo completo
       this.inventariosService.guardarDetallesInventario(this.inventoryDetails).subscribe(
-        (response) => {
-          console.log('Detalles guardados exitosamente:', response);
+        () => {
           const idInventario = Number(this.inventoryId);
-          const estado = 'Finalizado'
-          
-          this.inventariosService.actualizarEstadoInventario(idInventario,estado ).subscribe(
-            (updateResponse) => {
-              console.log('Estado del inventario actualizado exitosamente:', updateResponse);
+          const estado = 'Finalizado';
+
+          this.inventariosService.actualizarEstadoInventario(idInventario, estado).subscribe(
+            () => {
               alert('Inventario finalizado exitosamente.');
               this.inventoryDetails = [];
             },
-            (updateError)=>{
-              console.error('Error al actualizar el estado del inventario:', updateError)
-              alert('Detalles guardados, pero ocurrio un error al actualizar el estado del inventario')
+            (updateError) => {
+              console.error('Error al actualizar el estado del inventario:', updateError);
+              alert('Detalles guardados, pero ocurrió un error al actualizar el estado del inventario.');
             }
-          );  
-          
-          
+          );
         },
         (error) => {
           console.error('Error al guardar los detalles del inventario:', error);
@@ -179,10 +179,8 @@ export class RealizarInventarioPage implements OnInit {
       alert('No hay detalles para finalizar el inventario.');
     }
   }
-  
 
   goBack() {
-    this.navCtrl.navigateRoot(['inicio']);  // Ajusta la ruta según la página que quieras
+    this.navCtrl.navigateRoot(['inicio']);
   }
-  
 }
