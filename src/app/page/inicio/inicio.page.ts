@@ -13,7 +13,7 @@ export class InicioPage {
 
   // Método para gestionar usuarios
   gestionarUsuarios() {
-    this.navCtrl.navigateRoot(['gestionar-usuarios']); // Cambia la ruta según tu página de gestión de usuarios
+    this.navCtrl.navigateRoot(['gestion-usuario']); // Cambia la ruta según tu página de gestión de usuarios
   }
 
   // Método para gestionar tiendas

@@ -14,7 +14,9 @@ export class CrearTiendaPage implements OnInit {
   nuevaTienda: CrearTienda = {
     nombre_tienda: '',
     direccion: '',
-    ciudad: ''
+    ciudad: '',
+ 
+
   };
 
   constructor(private tiendasService: TiendasService, private router : Router,private navCtrl:NavController) {}

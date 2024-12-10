@@ -4,10 +4,17 @@ import { Routes, RouterModule } from '@angular/router';
 import { GestionUsuarioPage } from './gestion-usuario.page';
 
 const routes: Routes = [
+ 
+  {
+    path: 'crear-usuario',
+    loadChildren: () => import('./crear-usuario/crear-usuario/crear-usuario.module').then( m => m.CrearUsuarioPageModule)
+  },
+
   {
     path: '',
     component: GestionUsuarioPage
   }
+
 ];
 
 @NgModule({

@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { IsTiendaGuard } from './guards/istienda/istienda.guard';
-import { IsEncargadoGuard } from './guards/isencargado/isencargado.guard';
-import { IsAdminGuard } from './guards/isadmin/isadmin.guard';
 import { roleGuard } from './guards/role/role.guard';
 
 const routes: Routes = [

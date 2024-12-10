@@ -14,6 +14,7 @@ export class GestionTiendaPage implements OnInit {
 
   ngOnInit() {
   }
+  
   crearTienda() {
     this.navCtrl.navigateRoot(['gestion-tienda/crear-tienda']);
   }
