@@ -14,7 +14,9 @@ export class VerTiendasPage implements OnInit {
 
   tiendas: Tienda [] = [];
 
-  constructor(private tiendasService: TiendasService ,private router : Router, private navCtrl :NavController) { }
+  constructor(private tiendasService: TiendasService ,
+              private router : Router, 
+              private navCtrl :NavController) { }
 
   ngOnInit(){
     this.cargarTiendas();

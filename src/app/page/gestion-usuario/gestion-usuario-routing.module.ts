@@ -6,14 +6,20 @@ import { GestionUsuarioPage } from './gestion-usuario.page';
 const routes: Routes = [
  
   {
+    path: '',
+    component: GestionUsuarioPage
+  },
+
+  {
     path: 'crear-usuario',
     loadChildren: () => import('./crear-usuario/crear-usuario/crear-usuario.module').then( m => m.CrearUsuarioPageModule)
   },
 
   {
-    path: '',
-    component: GestionUsuarioPage
+    path: 'ver-usuarios',
+    loadChildren: () => import('./ver-usuarios/ver-usuarios/ver-usuarios.module').then( m => m.VerUsuariosPageModule)
   }
+
 
 ];
 

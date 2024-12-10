@@ -18,6 +18,10 @@ export class GestionUsuarioPage implements OnInit {
     this.navCtrl.navigateRoot(['gestion-usuario/crear-usuario']);
   }
 
+  verUsuarios() {
+    this.navCtrl.navigateRoot(['gestion-usuario/ver-usuarios']);
+  }
+
   goBack() {
     this.navCtrl.navigateRoot(['inicio']);  // Ajusta la ruta según la página que quieras
   }

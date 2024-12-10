@@ -35,8 +35,6 @@ export class UsuarioService {
     );
   }
 
-
-
   obtenerUsuarioPorUsername(nombreUsuario: string): Observable<Usuario> {
     const params = new HttpParams().set('select', '*');
     return this.apiConfig
@@ -65,7 +63,22 @@ export class UsuarioService {
         return response.body[0].role_id?.toString() ?? 'Rol no definido';
       })
     );
-}
+  }
 
+  obtenerUsuarios(): Observable<HttpResponse<Usuario[]>>{
+    const params = new HttpParams ()
+          .set('select', '*');
+    return this.apiConfig.get<Usuario[]>(this.path,params).pipe(
+      map(response => {
+        const usuarios = response.body
+        return new HttpResponse ({
+          body: usuarios,
+          headers : response.headers,
+          status: response.status,
+          statusText: response.statusText,
+        });
+      })
+    )
+  }
 }
   // Otros métodos según sea necesario...

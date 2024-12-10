@@ -1,0 +1,37 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Usuarios</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goBack()">Volver</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Mostrar usuarios si existen -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Usuarios Creados</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="2"><strong>ID</strong></ion-col>
+          <ion-col size="3"><strong>Nombre de Usuario</strong></ion-col>
+          <ion-col size="3"><strong>Nombre</strong></ion-col>
+          <ion-col size="2"><strong>Rol</strong></ion-col>
+          <ion-col size="2"><strong>Acciones</strong></ion-col>
+        </ion-row>
+        <ion-row *ngFor="let usuario of usuarios">
+          <ion-col size="2">{{ usuario.usuario_id }}</ion-col>
+          <ion-col size="3">{{ usuario.nombreUsuario }}</ion-col>
+          <ion-col size="3">{{ usuario.nombre }}</ion-col>
+          <ion-col size="2">{{ usuario.role_id }}</ion-col>
+          <ion-col size="2">
+            
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
