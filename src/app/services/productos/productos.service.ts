@@ -58,10 +58,34 @@ export class ProductosService {
       );
     }
 
-    //getProductByBarcode(barcode: string): Observable<Producto> {
-    //  const endpoint = `${this.path}/by-barcode/${barcode}`; // Ruta del endpoint
-     // return this.apiConfig.get<Producto>(endpoint);
-    //}
+    obtenerProductos(): Observable<HttpResponse<Producto[]>>{
+      const params = new HttpParams ()
+            .set('select', '*');
+      return this.apiConfig.get<Producto[]>(this.path,params).pipe(
+        map(response => {
+          const productos = response.body
+          return new HttpResponse ({
+            body: productos,
+            headers : response.headers,
+            status: response.status,
+            statusText: response.statusText,
+          });
+        })
+      )
+    }
+
+    actualizarProducto(producto: Producto): Observable<HttpResponse<Producto>> {
+      return this.apiConfig.patch<Producto>(`${this.path}?sku=eq.${producto.sku}`, producto).pipe(
+        map(response => {
+          return new HttpResponse({
+            body: response.body,
+            headers: response.headers,
+            status: response.status,
+            statusText: response.statusText,
+          });
+        })
+      );
+    }
 
 
 

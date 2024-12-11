@@ -1,0 +1,48 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Productos</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goBack()">Volver</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Productos</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <!-- Filtro por familia -->
+      <ion-item>
+        <ion-label>Familia</ion-label>
+        <ion-select [(ngModel)]="familiaSeleccionada" (ionChange)="filtrarPorFamilia()">
+          <ion-select-option value="">Todas</ion-select-option>
+          <ion-select-option *ngFor="let familia of familias" [value]="familia">
+            {{ familia }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      
+      <!-- Tabla de productos -->
+      <ion-grid>
+        <ion-row>
+          <ion-col size="2"><strong>sku</strong></ion-col>
+          <ion-col size="3"><strong>codbarra</strong></ion-col>
+          <ion-col size="3"><strong>nombre_producto</strong></ion-col>
+          <ion-col size="2"><strong>precio_venta</strong></ion-col>
+          <ion-col size="2"><strong>Acción</strong></ion-col>
+        </ion-row>
+        <ion-row *ngFor="let producto of productosFiltrados">
+          <ion-col size="2">{{ producto.sku }}</ion-col>
+          <ion-col size="3">{{ producto.codbarra }}</ion-col>
+          <ion-col size="3">{{ producto.nombre_producto }}</ion-col>
+          <ion-col size="2">{{ producto.precio_venta }}</ion-col>
+          <ion-col size="2">
+            <ion-button  (click)="irAModificarProducto(producto)">Modificar</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

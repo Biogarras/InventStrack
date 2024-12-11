@@ -19,7 +19,7 @@ export class GestionProductoPage implements OnInit {
 
   // Navega a la página de visualización de inventarios
   verProductos() {
-    this.navCtrl.navigateRoot(['gestion-producto/ver-producto']);
+    this.navCtrl.navigateRoot(['gestion-producto/ver-productos']);
   }
 
   // Navega a la página de modificación de inventario

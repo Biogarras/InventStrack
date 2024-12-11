@@ -1,5 +1,3 @@
-
-
 export interface Producto{
 
     sku: number | null;

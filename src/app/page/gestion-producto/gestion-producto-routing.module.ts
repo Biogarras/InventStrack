@@ -10,6 +10,14 @@ const routes: Routes = [
   },  {
     path: 'crear-producto',
     loadChildren: () => import('./crear-producto/crear-producto.module').then( m => m.CrearProductoPageModule)
+  },
+  {
+    path: 'ver-productos',
+    loadChildren: () => import('./ver-productos/ver-productos/ver-productos.module').then( m => m.VerProductosPageModule)
+  },
+  {
+    path: 'modificar-producto',
+    loadChildren: () => import('./modificar-producto/modificar-producto/modificar-producto.module').then( m => m.ModificarProductoPageModule)
   }
 
 ];

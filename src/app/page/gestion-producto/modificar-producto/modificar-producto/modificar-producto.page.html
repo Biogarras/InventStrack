@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Modificar Producto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Modificar Producto</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="stacked">Codigo de Barra</ion-label>
+        <ion-input [(ngModel)]="producto.codbarra"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Nombre Producto</ion-label>
+        <ion-input [(ngModel)]="producto.nombre_producto"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Familia</ion-label>
+        <ion-input [(ngModel)]="producto.familia"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Precio Venta</ion-label>
+        <ion-input type="number" [(ngModel)]="producto.precio_venta"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Costo</ion-label>
+        <ion-input type="number" [(ngModel)]="producto.costo"></ion-input>
+      </ion-item>
+      <ion-button expand="block"  (click)="actualizarProducto()">Actualizar</ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
