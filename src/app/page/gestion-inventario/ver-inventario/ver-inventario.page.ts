@@ -13,7 +13,9 @@ export class VerInventarioPage implements OnInit {
 
   inventarios: Inventario [] = [];
 
-  constructor( private inventariosServices: InventariosService, private router : Router, private navCtrl: NavController) { }
+  constructor( private inventariosServices: InventariosService,
+               private router : Router,
+               private navCtrl: NavController) { }
 
   ngOnInit(){
    this.cargarInventarios();
@@ -29,6 +31,10 @@ export class VerInventarioPage implements OnInit {
 
   goBack() {
     this.navCtrl.navigateRoot(['gestion-inventario']);  // Ajusta la ruta según la página que quieras
+  }
+
+  verDetalle(idInventario: number) {
+    this.navCtrl.navigateRoot(['gestion-inventario/detalle-inventario', idInventario]);
   }
 
   

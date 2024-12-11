@@ -5,16 +5,24 @@ import { GestionInventarioPage } from './gestion-inventario.page';
 
 const routes: Routes = [
   
+
+  {
+    path: '',
+    component: GestionInventarioPage
+  },
+
   {
     path: 'crearinventario',
     loadChildren: () => import('./crearinventario/crearinventario.module').then( m => m.CrearinventarioPageModule)
   },
+  
   {
-    path: '',
-    component: GestionInventarioPage
-  },  {
     path: 'ver-inventario',
     loadChildren: () => import('./ver-inventario/ver-inventario.module').then( m => m.VerInventarioPageModule)
+  },
+  {
+    path: 'detalle-inventario/:idInventario',
+    loadChildren: () => import('./detalle-inventario/detalle-inventario.module').then( m => m.DetalleInventarioPageModule)
   }
 
 

@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Detalle Inventario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Resumen del Inventario</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Diferencia de unidades faltantes:</strong> {{ diferenciaTotal }}</p>
+      <p><strong>Diferencia valorizada:</strong> ${{ diferenciaValorizadaTotal | number:'1.2-2' }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list>
+    <ion-item *ngFor="let item of detalleInventario">
+      <ion-label>
+        <h2>SKU: {{ item.sku }}</h2>
+        <p>Cantidad Contada: {{ item.cantidad_contada }}</p>
+        <p>Stock Inicial: {{ item.stock_inicial }}</p>
+        <p>Diferencia: {{ item.diferencia }}</p>
+        <p>Diferencia Valorizada: ${{ item.diferencia_valorizada | number:'1.2-2' }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
