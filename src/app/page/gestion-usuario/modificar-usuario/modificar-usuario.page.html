@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Modificar Usuario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Modificar Usuario</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="stacked">Nombre </ion-label>
+        <ion-input [(ngModel)]="usuario.nombre"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Nombre de Usuario</ion-label>
+        <ion-input [(ngModel)]="usuario.nombreUsuario"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input [(ngModel)]="usuario.email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Password</ion-label>
+        <ion-input [(ngModel)]="usuario.password"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Rol</ion-label>
+        <ion-input  [(ngModel)]="usuario.role_id"></ion-input>
+      </ion-item>
+      <ion-button expand="block"  (click)="actualizarUsuario()">Actualizar</ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

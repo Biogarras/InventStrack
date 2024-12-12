@@ -4,6 +4,7 @@ import { Observable, map} from 'rxjs';
 import { HttpParams ,HttpResponse} from '@angular/common/http';
 import { Usuario } from 'src/app/models/Usuario/usuario';
 import { CrearUsuario } from 'src/app/models/Usuario/crearUsuario';
+import { ModificarUsuario } from 'src/app/models/Usuario/modificarUsuario';
 
 @Injectable({
   providedIn: 'root'
@@ -80,5 +81,21 @@ export class UsuarioService {
       })
     )
   }
+
+  actualizarUsuario(usuario : ModificarUsuario): Observable<HttpResponse<ModificarUsuario>>{
+    return this.apiConfig.patch<ModificarUsuario>(`${this.path}?usuario_id=eq.${usuario.usuario_id}`, usuario).pipe(
+      map(response => {
+        return new HttpResponse({
+          body:response.body,
+          headers: response.headers,
+          status: response.status,
+          statusText: response.statusText,
+        });
+      })
+    ); 
+  }
+
+
+
 }
   // Otros métodos según sea necesario...

@@ -26,9 +26,9 @@
           <ion-col size="2">{{ usuario.usuario_id }}</ion-col>
           <ion-col size="3">{{ usuario.nombreUsuario }}</ion-col>
           <ion-col size="3">{{ usuario.nombre }}</ion-col>
-          <ion-col size="2">{{ usuario.role_id }}</ion-col>
+          <ion-col size="2">{{ roles[usuario.role_id!] || 'Rol no definido' }}</ion-col>
           <ion-col size="2">
-            
+            <ion-button  (click)="irAModificarUsuario(usuario)">Modificar</ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
