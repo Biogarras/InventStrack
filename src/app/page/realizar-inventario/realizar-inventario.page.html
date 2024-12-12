@@ -16,20 +16,22 @@
           <ion-label position="floating">Código de Barras</ion-label>
           <ion-input
             type="text"
-            [(ngModel)]="scannedResult"
+            [(ngModel)]="scannedCode"
             placeholder="Código de barras escaneado"
             readonly>
           </ion-input>
         </ion-item>
+        <ion-button expand="block" (click)="scanCode()">Escanear Código</ion-button>
+
+        <div *ngIf="scannedCode">
+          <h2>Código Escaneado:</h2>
+          <p>{{ scannedCode }}</p>
+        </div>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="6">
-        <ion-button expand="block" (click)="startScan()">Escanear Código</ion-button>
-      </ion-col>
-      <ion-col size="6">
-        <ion-button expand="block" (click)="scannedResult ? buscarproducto(scannedResult) : null">Buscar Producto</ion-button>
-      </ion-col>
+     
+      
     </ion-row>
 
     <!-- Información del Producto -->

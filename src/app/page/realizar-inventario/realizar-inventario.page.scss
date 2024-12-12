@@ -1,8 +1,8 @@
-.barcode-scanner-active {
-    ion-header, ion-footer {
-      display: none;
-    }
-    ion-content {
-      background: transparent;
-    }
-  }
+body.barcode-scanner-active {
+  visibility: hidden;
+  --background: transparent;
+}
+
+.barcode-scanner-modal {
+  visibility: visible;
+}

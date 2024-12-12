@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { guardarDetalleInv } from 'src/app/models/Inventario/guardarDetalleInv';
 import { BarcodeScanner, BarcodeFormat } from '@capacitor-mlkit/barcode-scanning';
-import { Capacitor } from '@capacitor/core';
+import { BarcodeScannerService } from 'src/app/services/BarcodeScannerService/barcode-scanner-service.service';
 
 @Component({
   selector: 'app-realizar-inventario',
@@ -14,20 +14,23 @@ import { Capacitor } from '@capacitor/core';
   styleUrls: ['./realizar-inventario.page.scss'],
 })
 export class RealizarInventarioPage implements OnInit {
-  scannedResult: string | null = null;
+  scannedCode: string | null = null;
   product: any = null;
   cantidad: number | null = null;
   inventoryDetails: guardarDetalleInv[] = [];
   loading = false;
   storeId: number = 19;
   inventoryId: number | null = null;
+  isSupported = false;
+  isPermissionGranted = false;
 
   constructor(
     private inventariosService: InventariosService,
     private productosService: ProductosService,
     private stock_TiendaService: StockTiendaService,
     private activatedRoute: ActivatedRoute,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private barcodeScanner: BarcodeScannerService
   ) {}
 
   ngOnInit() {
@@ -37,53 +40,37 @@ export class RealizarInventarioPage implements OnInit {
         this.setInventoryId(Number(selectedInventoryId));
       }
     });
+
+    // Verificar soporte del escáner y permisos
+    this.checkSupportAndPermissions();
   }
 
-  async startScan() {
-    if (Capacitor.isNative) {
-      try {
-        console.log('Intentando escanear...');
-        await this.checkCameraPermissions();
-        console.log('Intentando escanear...');
-    
-        document.querySelector('body')?.classList.add('barcode-scanner-active');
-        const { barcodes } = await BarcodeScanner.scan({
-          formats: [BarcodeFormat.QrCode],
-        });
-    
-        console.log('Códigos escaneados:', barcodes);
-        if (barcodes.length > 0) {
-          this.scannedResult = barcodes[0]?.displayValue || null;
-          if (this.scannedResult) {
-            this.buscarproducto(this.scannedResult);
-          }
-        } else {
-          alert('No se encontró ningún código.');
-        }
-      } catch (error) {
-        console.error('Error al escanear:', error);
-        alert('Ocurrió un error al escanear el código.');
-      } finally {
-        document.querySelector('body')?.classList.remove('barcode-scanner-active');
-        await BarcodeScanner.stopScan();
+  async checkSupportAndPermissions() {
+    try {
+      const support = await BarcodeScanner.isSupported();
+      this.isSupported = support.supported;
+
+      const permissions = await BarcodeScanner.checkPermissions();
+      this.isPermissionGranted = permissions.camera === 'granted';
+
+      if (!this.isPermissionGranted) {
+        await this.requestPermissions();
       }
-    } else {
-      alert('Escaneo de códigos solo está disponible en dispositivos móviles.');
+    } catch (error) {
+      console.error('Error al verificar soporte o permisos:', error);
     }
   }
-  
 
+  async requestPermissions() {
+    try {
+      const result = await BarcodeScanner.requestPermissions();
+      this.isPermissionGranted = result.camera === 'granted';
 
-  async checkCameraPermissions() {
-    const { camera } = await BarcodeScanner.checkPermissions();
-    console.log('Permisos de cámara:', camera); // Verificar permisos
-  
-    if (camera !== 'granted') {
-      const { camera: requestedCamera } = await BarcodeScanner.requestPermissions();
-      console.log('Permisos solicitados:', requestedCamera); // Verificar si el permiso fue otorgado
-      if (requestedCamera !== 'granted') {
-        throw new Error('Permisos de cámara no concedidos.');
+      if (!this.isPermissionGranted) {
+        alert('Se necesitan permisos de cámara para usar esta funcionalidad.');
       }
+    } catch (error) {
+      console.error('Error al solicitar permisos:', error);
     }
   }
 
@@ -152,7 +139,6 @@ export class RealizarInventarioPage implements OnInit {
   resetForm() {
     this.product = null;
     this.cantidad = null;
-    this.scannedResult = null;
   }
 
   removeDetail(detail: guardarDetalleInv) {
@@ -186,8 +172,18 @@ export class RealizarInventarioPage implements OnInit {
       alert('No hay detalles para finalizar el inventario.');
     }
   }
-
   goBack() {
     this.navCtrl.navigateRoot(['inicio']);
   }
+
+  async scanCode() {
+    this.scannedCode = await this.barcodeScanner.startScan();
+    if (this.scannedCode) {
+      console.log('Código escaneado:', this.scannedCode);
+    } else {
+      alert('No se detectó ningún código.');
+    }
+  }
+
+  
 }
