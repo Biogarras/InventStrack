@@ -6,7 +6,6 @@ const config: CapacitorConfig = {
   webDir: 'www',
   bundledWebRuntime: false,
   
-  
 };
 
 export default config;
