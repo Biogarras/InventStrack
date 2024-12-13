@@ -3,10 +3,10 @@ import { InventariosService } from 'src/app/services/inventarios/inventarios.ser
 import { ProductosService } from 'src/app/services/productos/productos.service';
 import { StockTiendaService } from 'src/app/services/stock_tienda/stock-tienda.service';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { guardarDetalleInv } from 'src/app/models/Inventario/guardarDetalleInv';
-import { BarcodeScanner, BarcodeFormat } from '@capacitor-mlkit/barcode-scanning';
 import { BarcodeScannerService } from 'src/app/services/BarcodeScannerService/barcode-scanner-service.service';
+import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 
 @Component({
   selector: 'app-realizar-inventario',
@@ -21,8 +21,10 @@ export class RealizarInventarioPage implements OnInit {
   loading = false;
   storeId: number = 19;
   inventoryId: number | null = null;
-  isSupported = false;
   isPermissionGranted = false;
+  
+  barcodes:Barcode[] = [];
+  isSupported = false;
 
   constructor(
     private inventariosService: InventariosService,
@@ -30,7 +32,8 @@ export class RealizarInventarioPage implements OnInit {
     private stock_TiendaService: StockTiendaService,
     private activatedRoute: ActivatedRoute,
     private navCtrl: NavController,
-    private barcodeScanner: BarcodeScannerService
+    private barcodeScanner: BarcodeScannerService,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -39,40 +42,40 @@ export class RealizarInventarioPage implements OnInit {
       if (selectedInventoryId) {
         this.setInventoryId(Number(selectedInventoryId));
       }
+      BarcodeScanner.isSupported().then((result) =>{
+        this.isSupported = result.supported;
+      })
+
+    });  
+  }
+
+  async scan(): Promise<void> {
+    const granted = await this.requestPermissions();
+    if (!granted) {
+      this.presentAlert();
+      return;
+    }
+    const { barcodes } = await BarcodeScanner.scan();
+    this.barcodes.push(...barcodes);
+  }
+
+  async requestPermissions(): Promise<boolean> {
+    const { camera } = await BarcodeScanner.requestPermissions();
+    return camera === 'granted' || camera === 'limited';
+  }
+
+  async presentAlert(): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Permission denied',
+      message: 'Please grant camera permission to use the barcode scanner.',
+      buttons: ['OK'],
     });
-
-    // Verificar soporte del escáner y permisos
-    this.checkSupportAndPermissions();
+    await alert.present();
   }
 
-  async checkSupportAndPermissions() {
-    try {
-      const support = await BarcodeScanner.isSupported();
-      this.isSupported = support.supported;
 
-      const permissions = await BarcodeScanner.checkPermissions();
-      this.isPermissionGranted = permissions.camera === 'granted';
 
-      if (!this.isPermissionGranted) {
-        await this.requestPermissions();
-      }
-    } catch (error) {
-      console.error('Error al verificar soporte o permisos:', error);
-    }
-  }
-
-  async requestPermissions() {
-    try {
-      const result = await BarcodeScanner.requestPermissions();
-      this.isPermissionGranted = result.camera === 'granted';
-
-      if (!this.isPermissionGranted) {
-        alert('Se necesitan permisos de cámara para usar esta funcionalidad.');
-      }
-    } catch (error) {
-      console.error('Error al solicitar permisos:', error);
-    }
-  }
+  
 
   setInventoryId(id: number) {
     this.inventoryId = id;
@@ -172,18 +175,10 @@ export class RealizarInventarioPage implements OnInit {
       alert('No hay detalles para finalizar el inventario.');
     }
   }
+
+  
+
   goBack() {
     this.navCtrl.navigateRoot(['inicio']);
   }
-
-  async scanCode() {
-    this.scannedCode = await this.barcodeScanner.startScan();
-    if (this.scannedCode) {
-      console.log('Código escaneado:', this.scannedCode);
-    } else {
-      alert('No se detectó ningún código.');
-    }
-  }
-
-  
 }
