@@ -23,7 +23,7 @@ export class RealizarInventarioPage implements OnInit {
   inventoryId: number | null = null;
   isPermissionGranted = false;
   
-  barcodes:Barcode[] = [];
+  barcodes: Barcode[] = [];
   isSupported = false;
 
   constructor(
@@ -42,11 +42,10 @@ export class RealizarInventarioPage implements OnInit {
       if (selectedInventoryId) {
         this.setInventoryId(Number(selectedInventoryId));
       }
-      BarcodeScanner.isSupported().then((result) =>{
+      BarcodeScanner.isSupported().then((result) => {
         this.isSupported = result.supported;
-      })
-
-    });  
+      });
+    });
   }
 
   async scan(): Promise<void> {
@@ -57,6 +56,10 @@ export class RealizarInventarioPage implements OnInit {
     }
     const { barcodes } = await BarcodeScanner.scan();
     this.barcodes.push(...barcodes);
+    if (barcodes.length > 0) {
+      this.scannedCode = barcodes[0].rawValue;
+      this.buscarproducto(this.scannedCode);
+    }
   }
 
   async requestPermissions(): Promise<boolean> {
@@ -72,10 +75,6 @@ export class RealizarInventarioPage implements OnInit {
     });
     await alert.present();
   }
-
-
-
-  
 
   setInventoryId(id: number) {
     this.inventoryId = id;
@@ -175,8 +174,6 @@ export class RealizarInventarioPage implements OnInit {
       alert('No hay detalles para finalizar el inventario.');
     }
   }
-
-  
 
   goBack() {
     this.navCtrl.navigateRoot(['inicio']);

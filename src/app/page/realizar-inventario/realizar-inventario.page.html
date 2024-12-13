@@ -59,14 +59,13 @@
     <ion-row *ngIf="inventoryDetails.length > 0">
       <ion-col size="12">
         <ion-list>
-          <ion-list-header>
-            <ion-label>Detalles del Inventario</ion-label>
-          </ion-list-header>
           <ion-item *ngFor="let detail of inventoryDetails">
             <ion-label>
               {{ detail.sku }} - {{ detail.cantidad_contada }} unidades
             </ion-label>
-            <ion-button slot="end" fill="clear" (click)="removeDetail(detail)">Eliminar</ion-button>
+            <ion-button (click)="removeDetail(detail)" color="danger" fill="clear">
+              <ion-icon name="trash"></ion-icon>
+            </ion-button>
           </ion-item>
         </ion-list>
       </ion-col>
@@ -79,15 +78,4 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
-  <!-- Listado de códigos escaneados -->
-  <ion-list>
-    <ion-list-header>
-      <ion-label>Códigos Escaneados</ion-label>
-    </ion-list-header>
-    <ion-item *ngFor="let barcode of barcodes">
-      <ion-label position="stacked">{{ barcode.format }}</ion-label>
-      <ion-input type="text" [value]="barcode.rawValue"></ion-input>
-    </ion-item>
-  </ion-list>
 </ion-content>
