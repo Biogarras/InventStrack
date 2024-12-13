@@ -18,23 +18,19 @@
         <!-- Encabezados -->
         <ion-row>
           <ion-col size="2"><strong>ID</strong></ion-col>
-          <ion-col size="3"><strong>Tienda</strong></ion-col>
-          <ion-col size="3"><strong>Fecha de Creación</strong></ion-col>
-          <ion-col size="3"><strong>Encargado</strong></ion-col>
+          <ion-col size="4"><strong>Tienda</strong></ion-col>
+          <ion-col size="3"><strong>Fecha</strong></ion-col>
+          <ion-col size="2"><strong>Encargado</strong></ion-col>
           <ion-col size="1"><strong>Acción</strong></ion-col>
         </ion-row>
         <!-- Fila de datos -->
         <ion-row *ngFor="let inventario of inventariosPendientes">
           <ion-col size="2">{{ inventario.id_inventario }}</ion-col>
-          <ion-col size="3">{{ inventario.tiendas.nombre_tienda}}</ion-col>
-          
+          <ion-col size="4">{{ inventario.tiendas.nombre_tienda }}</ion-col>
           <ion-col size="3">{{ inventario.fecha_creacion | date: 'shortDate' }}</ion-col>
-          <ion-col size="3">{{ inventario.Usuario.nombre }}</ion-col>
+          <ion-col size="2">{{ inventario.Usuario.nombre }}</ion-col>
           <ion-col size="1">
-            <ion-button 
-              fill="outline" 
-              color="primary" 
-              (click)="realizarInventario(inventario.id_inventario)">
+            <ion-button fill="outline" color="primary" (click)="realizarInventario(inventario.id_inventario)">
               Realizar
             </ion-button>
           </ion-col>

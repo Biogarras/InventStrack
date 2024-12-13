@@ -92,6 +92,10 @@ export class RealizarInventarioPage implements OnInit {
         const productos = response;
         if (Array.isArray(productos) && productos.length > 0) {
           this.product = productos[0];
+          // Redondea el precio de venta a entero
+          if (this.product.precio_venta) {
+            this.product.precio_venta = Math.floor(this.product.precio_venta);
+          }
         } else {
           alert('Producto no encontrado.');
           this.product = null;
