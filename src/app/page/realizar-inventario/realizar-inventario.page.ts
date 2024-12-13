@@ -109,23 +109,50 @@ export class RealizarInventarioPage implements OnInit {
 
   addInventoryDetail() {
     if (this.product && this.cantidad != null && this.inventoryId) {
+      // Verificar que la cantidad no sea negativa
+      if (this.cantidad < 0) {
+        alert('La cantidad no puede ser negativa.');
+        return;
+      }
+  
+      // Obtener el stock inicial del producto
       this.stock_TiendaService
         .obtenerStockPorCodigoDeBarraYTienda(this.product.sku, this.storeId)
         .subscribe(
           (response) => {
             const stockProducto = response.body?.[0];
             const stockInicial = stockProducto ? stockProducto.cantidad_disponible : 0;
-
-            const detail: guardarDetalleInv = {
-              id_inventario: Number(this.inventoryId),
-              sku: this.product.sku,
-              cantidad_contada: this.cantidad,
-              stock_inicial: stockInicial,
-              precio_venta: this.product.precio_venta,
-              costo: this.product.costo,
-            };
-
-            this.inventoryDetails.push(detail);
+  
+            // Verificar si el producto ya existe en los detalles del inventario
+            const existingDetail = this.inventoryDetails.find(
+              (detail) => detail.sku === this.product.sku
+            );
+  
+            if (existingDetail) {
+              // Si el producto ya existe, actualizar la cantidad
+              const newQuantity = existingDetail.cantidad_contada!+ this.cantidad!;
+  
+              // Asegurarse de que no se exceda el stock disponible ni que el número sea negativo
+              if (newQuantity < 0) {
+                alert('No puedes agregar una cantidad mayor al stock disponible o un número negativo.');
+                return;
+              }
+  
+              existingDetail.cantidad_contada = newQuantity; // Actualizar la cantidad
+            } else {
+              // Si no existe, agregar un nuevo detalle
+              const detail: guardarDetalleInv = {
+                id_inventario: Number(this.inventoryId),
+                sku: this.product.sku,
+                cantidad_contada: this.cantidad,
+                stock_inicial: stockInicial,
+                precio_venta: this.product.precio_venta,
+                costo: this.product.costo,
+              };
+  
+              this.inventoryDetails.push(detail);
+            }
+  
             this.resetForm();
           },
           (error) => {
