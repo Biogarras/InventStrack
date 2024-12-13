@@ -21,12 +21,7 @@
             readonly>
           </ion-input>
         </ion-item>
-        
       </ion-col>
-    </ion-row>
-    <ion-row>
-     
-      
     </ion-row>
 
     <!-- Información del Producto -->
@@ -80,12 +75,18 @@
     </ion-row>
   </ion-grid>
 
+  <!-- Listado de códigos escaneados -->
   <ion-list>
+    <ion-list-header>
+      <ion-label>Códigos Escaneados</ion-label>
+    </ion-list-header>
     <ion-item *ngFor="let barcode of barcodes">
       <ion-label position="stacked">{{ barcode.format }}</ion-label>
       <ion-input type="text" [value]="barcode.rawValue"></ion-input>
     </ion-item>
   </ion-list>
+
+  <!-- Botón flotante para escanear -->
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="scan()" [disabled]="!isSupported">
       <ion-icon name="scan"></ion-icon>
