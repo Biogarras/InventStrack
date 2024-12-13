@@ -22,7 +22,7 @@ export class RealizarInventarioPage implements OnInit {
   storeId: number = 19;
   inventoryId: number | null = null;
   isPermissionGranted = false;
-  
+
   barcodes: Barcode[] = [];
   isSupported = false;
 
@@ -92,7 +92,6 @@ export class RealizarInventarioPage implements OnInit {
         const productos = response;
         if (Array.isArray(productos) && productos.length > 0) {
           this.product = productos[0];
-          // Redondea el precio de venta a entero
           if (this.product.precio_venta) {
             this.product.precio_venta = Math.floor(this.product.precio_venta);
           }
@@ -113,38 +112,30 @@ export class RealizarInventarioPage implements OnInit {
 
   addInventoryDetail() {
     if (this.product && this.cantidad != null && this.inventoryId) {
-      // Verificar que la cantidad no sea negativa
       if (this.cantidad < 0) {
         alert('La cantidad no puede ser negativa.');
         return;
       }
-  
-      // Obtener el stock inicial del producto
+
       this.stock_TiendaService
         .obtenerStockPorCodigoDeBarraYTienda(this.product.sku, this.storeId)
         .subscribe(
           (response) => {
             const stockProducto = response.body?.[0];
             const stockInicial = stockProducto ? stockProducto.cantidad_disponible : 0;
-  
-            // Verificar si el producto ya existe en los detalles del inventario
+
             const existingDetail = this.inventoryDetails.find(
               (detail) => detail.sku === this.product.sku
             );
-  
+
             if (existingDetail) {
-              // Si el producto ya existe, actualizar la cantidad
-              const newQuantity = existingDetail.cantidad_contada!+ this.cantidad!;
-  
-              // Asegurarse de que no se exceda el stock disponible ni que el número sea negativo
+              const newQuantity = existingDetail.cantidad_contada! + this.cantidad!;
               if (newQuantity < 0) {
                 alert('No puedes agregar una cantidad mayor al stock disponible o un número negativo.');
                 return;
               }
-  
-              existingDetail.cantidad_contada = newQuantity; // Actualizar la cantidad
+              existingDetail.cantidad_contada = newQuantity;
             } else {
-              // Si no existe, agregar un nuevo detalle
               const detail: guardarDetalleInv = {
                 id_inventario: Number(this.inventoryId),
                 sku: this.product.sku,
@@ -153,10 +144,10 @@ export class RealizarInventarioPage implements OnInit {
                 precio_venta: this.product.precio_venta,
                 costo: this.product.costo,
               };
-  
+
               this.inventoryDetails.push(detail);
             }
-  
+
             this.resetForm();
           },
           (error) => {
@@ -206,7 +197,23 @@ export class RealizarInventarioPage implements OnInit {
     }
   }
 
-  goBack() {
-    this.navCtrl.navigateRoot(['inicio']);
+  async goBack() {
+    const alert = await this.alertController.create({
+      header: 'Confirmación',
+      message: '¿Estás seguro de que deseas abandonar el inventario? Se perderán los cambios no guardados.',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Aceptar',
+          handler: () => {
+            this.navCtrl.navigateRoot(['inicio']);
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 }
