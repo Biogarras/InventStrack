@@ -24,15 +24,7 @@ export class GestionInventarioPage implements OnInit {
     this.navCtrl.navigateRoot(['gestion-inventario/ver-inventario']);
   }
 
-  // Navega a la página de modificación de inventario
-  modificarInventario() {
-    this.router.navigate(['/modificar-inventario']);
-  }
-
-  // Navega a la página de eliminación de inventario
-  eliminarInventario() {
-    this.router.navigate(['/eliminar-inventario']);
-  }
+ 
 
   // Vuelve a la página de inicio o a la anterior
   goBack() {

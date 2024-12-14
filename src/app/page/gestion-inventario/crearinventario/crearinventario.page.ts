@@ -51,30 +51,38 @@ export class CrearinventarioPage implements OnInit {
     const tiendasSeleccionadas = Object.keys(this.tiendaSeleccionada)
       .filter((id) => this.tiendaSeleccionada[+id])
       .map((id) => +id);
-    console.log('tiendas seleccionadas',tiendasSeleccionadas)
+  
+    console.log('tiendas seleccionadas', tiendasSeleccionadas);
+  
     if (tiendasSeleccionadas.length === 0) {
       alert('Selecciona al menos una tienda.');
       return;
     }
+  
     tiendasSeleccionadas.forEach((tiendaId) => {
-      const inventarioData = {
-        id_tienda: tiendaId,
-        estado: 'Pendiente por realizar',
-        id_encargado: this.idEncargado,
-      };
-
-      this.inventariosService.crearInventario(inventarioData).subscribe({
-        next: (response) => {
-          console.log(`Inventario creado para la tienda ${tiendaId}`, response);
-          alert(`Inventario levantado para la tienda ${tiendaId}.`);
-        },
-        error: (error) => {
-          console.error('Error al crear inventario:', error);
-          alert('Error al crear el inventario. Por favor, inténtelo más tarde.');
-        },
-      });
+      const tiendaSeleccionada = this.tiendas.find(tienda => tienda.id_tienda === tiendaId);
+      
+      if (tiendaSeleccionada) {
+        const inventarioData = {
+          id_tienda: tiendaId,
+          estado: 'Pendiente por realizar',
+          id_encargado: tiendaSeleccionada.id_encargado, // Obtén el id_encargado de la tienda seleccionada
+        };
+  
+        this.inventariosService.crearInventario(inventarioData).subscribe({
+          next: (response) => {
+            console.log(`Inventario creado para la tienda ${tiendaId}`, response);
+            alert(`Inventario levantado para la tienda ${tiendaId}.`);
+          },
+          error: (error) => {
+            console.error('Error al crear inventario:', error);
+            alert('Error al crear el inventario. Por favor, inténtelo más tarde.');
+          },
+        });
+      }
     });
   }
+  
 
   goBack() {
     this.navCtrl.navigateRoot(['gestion-inventario']); // Ajusta la ruta según tu configuración

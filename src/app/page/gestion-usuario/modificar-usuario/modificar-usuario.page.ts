@@ -57,6 +57,10 @@ export class ModificarUsuarioPage implements OnInit {
       await toast.present();
     }
 
+    goBack() {
+      this.navCtrl.navigateRoot(['gestion-usuario']);
+    }
+
 
 
   }

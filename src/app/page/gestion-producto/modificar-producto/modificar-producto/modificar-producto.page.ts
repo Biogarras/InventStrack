@@ -56,4 +56,8 @@ export class ModificarProductoPage implements OnInit {
     });
     await toast.present();
   }
+
+  goBack() {
+    this.navCtrl.navigateRoot(['/inicio']);  // Ajusta la ruta según la página que quieras
+  }
 }

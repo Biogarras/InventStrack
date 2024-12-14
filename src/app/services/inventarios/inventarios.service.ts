@@ -135,6 +135,26 @@ export class InventariosService {
     );
   }
 
+  actualizarFechaRealizacionInventario(idInventario: number, fechaRealizacion: Date): Observable<HttpResponse<any>> {
+    const params = new HttpParams().set('id_inventario', `eq.${idInventario}`); // Filtro para seleccionar el inventario con el id especificado
+    const data = { fecha_realizacion: fechaRealizacion }; // Los datos que se van a actualizar
+  
+    return this.apiConfig.patch<any>(`${this.path}`, data, params).pipe(
+      map(response => {
+        return new HttpResponse({
+          body: response.body,
+          headers: response.headers,
+          status: response.status,
+          statusText: response.statusText,
+        });
+      }),
+      catchError(error => {
+        console.error('Error al actualizar la fecha de realización:', error);
+        return throwError(() => new Error('Error al actualizar la fecha de realización del inventario.'));
+      })
+    );
+  }
+
 }
 
 

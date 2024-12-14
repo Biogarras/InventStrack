@@ -11,40 +11,47 @@ import { ProductosService } from 'src/app/services/productos/productos.service';
 })
 export class CrearProductoPage implements OnInit {
 
-  nuevoProducto: Producto ={
+  nuevoProducto: Producto = {
     sku: 0,
-    codbarra:null,
+    codbarra: null,
     nombre_producto: '',
     familia: '',
     precio_venta: null,
     costo: null,
+  };
 
-    
-  }
+  constructor(
+    private productosService: ProductosService,
+    private router: Router,
+    private navCtrl: NavController
+  ) {}
 
-  constructor( private productosService: ProductosService , private router : Router, private navCtrl : NavController) { }
+  ngOnInit() {}
 
-  ngOnInit() {
-  }
-
-  crearProducto(){
+  crearProducto() {
     this.productosService.agregarNuevoProducto(this.nuevoProducto).subscribe({
-      next:(response) => {
-        console.log('Producto creado con exito', response);
-        alert('Tienda creada con exito')
+      next: (response) => {
+        console.log('Producto creado con éxito', response);
+        alert('Producto creado con éxito');
+
+        // Limpiar los datos ingresados
+        this.nuevoProducto = {
+          sku: 0,
+          codbarra: null,
+          nombre_producto: '',
+          familia: '',
+          precio_venta: null,
+          costo: null,
+        };
       },
-      error:(error)=> {
-        console.error('Error al crear producto',error);
-        alert('Error al crear el producto')
-      }
-      
+      error: (error) => {
+        console.error('Error al crear producto', error);
+        alert('Error al crear el producto');
+      },
     });
   }
+
   goBack() {
-    this.navCtrl.navigateRoot(['gestion-producto']);  // Ajusta la ruta según la página que quieras
+    this.navCtrl.navigateRoot(['gestion-producto']); // Ajusta la ruta según la página que quieras
   }
-
-  
-  
-
 }

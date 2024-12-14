@@ -32,11 +32,14 @@ export class VerUsuariosPage implements OnInit {
     this.usuariosService.obtenerUsuarios().subscribe((response) => {
       if (response.body) {
         this.usuarios = response.body; // Cargamos usuarios directamente
+  
+        // Ordenar usuarios por nombre de manera ascendente
+        this.usuarios.sort((a, b) => a.usuario_id! - b.usuario_id!);
+  
         console.log('Usuarios cargados:', this.usuarios);
       }
     });
   }
-
   cargarRoles(callback: () => void) {
     this.rolService.buscarRol().subscribe((response) => {
       if (response.body) {

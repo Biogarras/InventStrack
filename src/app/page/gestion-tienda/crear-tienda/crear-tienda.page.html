@@ -1,10 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Crear Tienda</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goBack()">Volver</ion-button>
+    </ion-buttons>
   </ion-toolbar>
-  <ion-buttons slot="end">
-    <ion-button (click)="goBack()">Volver</ion-button>
-  </ion-buttons>
 </ion-header>
 
 <ion-content>
@@ -20,8 +20,26 @@
     </ion-item>
 
     <ion-item>
-      <ion-label position="floating">Ciudad</ion-label>
-      <ion-input [(ngModel)]="nuevaTienda.ciudad" name="ciudad" required></ion-input>
+      <ion-label>Ciudad</ion-label>
+      <ion-select [(ngModel)]="nuevaTienda.ciudad" name="ciudad" required>
+        <ion-select-option *ngFor="let ciudad of ciudades" [value]="ciudad.nombre">
+          {{ ciudad.nombre }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Encargado</ion-label>
+      <ion-select
+        [(ngModel)]="nuevaTienda.id_encargado"
+        name="id_encargado"
+        required
+        placeholder="Seleccione un encargado"
+      >
+        <ion-select-option *ngFor="let usuario of usuariosDisponibles" [value]="usuario.usuario_id">
+          {{ usuario.nombre }}
+        </ion-select-option>
+      </ion-select>
     </ion-item>
 
     <ion-button expand="full" type="submit">Crear Tienda</ion-button>

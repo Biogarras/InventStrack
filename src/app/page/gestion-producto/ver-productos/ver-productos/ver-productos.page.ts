@@ -28,6 +28,10 @@ export class VerProductosPage implements OnInit {
     this.productosSerice.obtenerProductos().subscribe(response => {
       if (response.body) {
         this.productos = response.body;
+        
+        // Ordenar los productos por sku de menor a mayor
+        this.productos.sort((a, b) => a.sku! - b.sku!);
+  
         this.productosFiltrados = [...this.productos];
         this.cargarFamilias(); // Generar familias únicas
       }

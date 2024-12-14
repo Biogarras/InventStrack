@@ -37,6 +37,8 @@ export class ProductosService {
       );
       
     }
+
+
     buscarProductoPorCodigoBarra(codbarra: any): Observable<HttpResponse<any>> {
       const params = new HttpParams()
         .set('select', '*')
@@ -54,6 +56,27 @@ export class ProductosService {
         catchError((error) => {
           console.error('Error al obtener el producto', error);
           return throwError (() => new Error ('Error al obtener la tienda. Por favor, intentelo mas tarde.'));
+        })
+      );
+    }
+
+    buscarProductoPorSku(sku: any): Observable<HttpResponse<any>> {
+      const params = new HttpParams()
+        .set('select', '*')
+        .set('sku', `eq.${sku}`);
+        
+      return this.apiConfig.get<HttpResponse<any>>('productos', params).pipe(
+        map((response) =>{
+          console.log('El producto buscado por sku es :',response)
+          if (!response.body){
+            throw new Error ('No se encontro el producto con el sku ingresado');
+          }
+          const producto = (response.body)
+          return response.body as any;
+        }),
+        catchError((error) => {
+          console.error('Error al obtener el producto', error);
+          return throwError (() => new Error ('Error al obtener el producto. Por favor, intentelo mas tarde.'));
         })
       );
     }

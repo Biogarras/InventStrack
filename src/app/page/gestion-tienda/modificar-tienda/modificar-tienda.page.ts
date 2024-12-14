@@ -41,11 +41,11 @@ export class ModificarTiendaPage implements OnInit {
       this._tiendaService.obtenerTiendaPorId(id).subscribe({
         next: (response:ModificarTienda) => {
           if (response) {
-            console.log('chupalo',response.id_tienda)
+         
             this.baseTienda = response;
-            console.log('Tienda cargadasss:', this.baseTienda);
+        
             this.datosCargados = true;  // Asigna toda la tienda desde la respuesta
-            console.log('ID de la tienda cargada:', this.baseTienda.id_tienda);
+           
           } else {
             console.error('No se encontró la tienda en la respuesta del servidor.');
             this.datosCargados = false;
@@ -64,7 +64,7 @@ export class ModificarTiendaPage implements OnInit {
 
   guardarCambios(){
     const iDTienda = this.baseTienda?.id_tienda;
-    console.log('Tienda cargadadasdsadasadd:', this.baseTienda);
+    
     if (iDTienda !== null && iDTienda !== undefined){
       const datosParciales ={
         ciudad:this.baseTienda.ciudad,

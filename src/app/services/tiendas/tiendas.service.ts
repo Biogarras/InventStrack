@@ -43,6 +43,7 @@ export class TiendasService {
           nombre_tienda: response.body?.nombre_tienda || null,
           direccion: response.body?.direccion || null,
           ciudad: response.body?.ciudad || null,
+          id_encargado: response.body?.id_encargado || null,
           // Asumimos que una tienda recién creada no está eliminada 
         };
         return new HttpResponse({
@@ -114,22 +115,50 @@ modificarTienda(id:number , datosParciales: ModificarTienda):Observable<Tienda>{
 
 obtenerTiendas2(): Observable<HttpResponse<Tienda[]>> {
   const params = new HttpParams()
-                 .set('select', 'id_tienda,nombre_tienda,deleted_at');
+                 .set('select', 'id_tienda,nombre_tienda,deleted_at,id_encargado'); // Asegúrate de incluir id_encargado
   return this.apiConfig.get<Tienda[]>(this.path, params).pipe(
     map(response => {
-      console.log('Respuesta de tiendas:', response.body); 
+      console.log('Respuesta de tiendas:', response.body);
       const tiendasFiltradas = response.body?.filter(tienda => tienda.deleted_at === null);
-      console.log('aeeeeeeer',tiendasFiltradas)
       return new HttpResponse({
         body: tiendasFiltradas,
         headers: response.headers,
         status: response.status,
         statusText: response.statusText, 
       });
-      
     })
-    
   );
-  
 }
+  newobtenerTiendaPorId(id: number): Observable<Tienda> {
+    const params = new HttpParams().set('select', 'nombre_tienda');
+    return this.apiConfig.get<Tienda[]>(`${this.path}?id_tienda=eq.${id}`, params).pipe(
+      map(response => {
+        if (!response.body || response.body.length === 0) {
+          throw new Error('No se encontró la Tienda');
+        }
+        return response.body[0]; // Retorna el primer usuario encontrado
+      })
+    );
+  }
+
+  agregarNuevaTiendaConEncargado(tienda: CrearTienda, idEncargado: number): Observable<HttpResponse<Tienda>> {
+    tienda.id_encargado = idEncargado; // Asigna el id_encargado correctamente
+  
+    return this.apiConfig.post<Tienda>(this.path, tienda).pipe(
+      map(response => {
+        const tiendaCreada: Tienda = {
+          nombre_tienda: response.body?.nombre_tienda || null,
+          direccion: response.body?.direccion || null,
+          ciudad: response.body?.ciudad || null,
+          id_encargado: idEncargado // Asegúrate de que el id_encargado esté correctamente asignado
+        };
+        return new HttpResponse({
+          body: tiendaCreada,
+          headers: response.headers,
+          status: response.status,
+          statusText: response.statusText
+        });
+      })
+    );
+  }
 }

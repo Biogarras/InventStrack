@@ -95,6 +95,24 @@ export class UsuarioService {
     ); 
   }
 
+  obtenerUsuarioPorId(id: number): Observable<Usuario> {
+    const params = new HttpParams().set('select', 'nombre');
+    return this.apiConfig.get<Usuario[]>(`${this.path}?usuario_id=eq.${id}`, params).pipe(
+      map(response => {
+        if (!response.body || response.body.length === 0) {
+          throw new Error('No se encontró el usuario');
+        }
+        return response.body[0]; // Retorna el primer usuario encontrado
+      })
+    );
+  }
+
+  obtenerUsuariosSinTienda(): Observable<Usuario[]> {
+    return this.apiConfig.get<Usuario[]>(`${this.path}?id_encargado=is.null`).pipe(
+      map(response => response.body || [])
+    );
+  }
+
 
 
 }

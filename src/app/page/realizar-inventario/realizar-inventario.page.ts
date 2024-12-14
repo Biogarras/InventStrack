@@ -171,15 +171,27 @@ export class RealizarInventarioPage implements OnInit {
 
   finalizeInventory() {
     if (this.inventoryDetails.length > 0) {
+      // Guardar los detalles del inventario
       this.inventariosService.guardarDetallesInventario(this.inventoryDetails).subscribe(
         () => {
           const idInventario = Number(this.inventoryId);
           const estado = 'Finalizado';
-
+          const fecha_realizacion = new Date(); // Fecha actual
+  
+          // Actualizar el estado del inventario
           this.inventariosService.actualizarEstadoInventario(idInventario, estado).subscribe(
             () => {
-              alert('Inventario finalizado exitosamente.');
-              this.inventoryDetails = [];
+              // Actualizar la fecha_realizacion del usuario
+              this.inventariosService.actualizarFechaRealizacionInventario(this.storeId, fecha_realizacion).subscribe(
+                () => {
+                  alert('Inventario finalizado exitosamente y fecha de realización actualizada.');
+                  this.inventoryDetails = [];
+                },
+                (error) => {
+                  console.error('Error al actualizar la fecha de realización del usuario:', error);
+                  alert('Detalles guardados, pero ocurrió un error al actualizar la fecha de realización.');
+                }
+              );
             },
             (updateError) => {
               console.error('Error al actualizar el estado del inventario:', updateError);
@@ -196,6 +208,7 @@ export class RealizarInventarioPage implements OnInit {
       alert('No hay detalles para finalizar el inventario.');
     }
   }
+  
 
   async goBack() {
     const alert = await this.alertController.create({

@@ -15,17 +15,17 @@
     <ion-card-content>
       <ion-grid>
         <ion-row>
-          <ion-col size="1"><strong>ID</strong></ion-col>
+          <ion-col size="1"><strong>Numero de inventario</strong></ion-col>
           <ion-col size="2"><strong>Tienda</strong></ion-col>
-          <ion-col size="2"><strong>Encargado</strong></ion-col>
+          <ion-col size="2"><strong>Nombre del Encargado</strong></ion-col>
           <ion-col size="2"><strong>Creación</strong></ion-col>
           <ion-col size="2"><strong>Realización</strong></ion-col>
           <ion-col size="2"><strong>Estado</strong></ion-col>
         </ion-row>
         <ion-row *ngFor="let inventario of inventarios">
           <ion-col size="1">{{ inventario.id_inventario }}</ion-col>
-          <ion-col size="2">{{ inventario.id_tienda }}</ion-col>
-          <ion-col size="2">{{ inventario.id_encargado }}</ion-col>
+          <ion-col size="2">{{ inventario.nombre_tienda }}</ion-col>
+          <ion-col size="2">{{ inventario.nombre_encargado }}</ion-col>
           <ion-col size="2">{{ inventario.fecha_creacion | date: 'short' }}</ion-col>
           <ion-col size="2">{{ inventario.fecha_realizacion ? (inventario.fecha_realizacion | date: 'short') : 'No realizada' }}</ion-col>
           <ion-col size="2">
